@@ -1,0 +1,12 @@
+
+Tue 25/4 (4 hrs): setup project, import mixamo model+animation
+Wed 26/4 (5 hrs): minion: waypoints + FSM + animatorctrl
+Thu 27/4 (2 hrs): hero: FSM + animator
+==================
+MILESTONE 1
+==================
+  minion walks along waypoints, detects enemy, walks to enemy + attacks
+  hero walks to target, plays attack sequence
+  (enemy does nothing)
+==================
+Sun 30/4 (3 hrs): basic mouse control + ability1
