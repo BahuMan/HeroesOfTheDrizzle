@@ -27,6 +27,9 @@ public class HeroControl : MonoBehaviour {
     [SerializeField]
     private UntargettedSkill Ability1;
 
+    [SerializeField]
+    private Tar
+
 	// Use this for initialization
 	void Start () {
         _animator = GetComponent<Animator>();
