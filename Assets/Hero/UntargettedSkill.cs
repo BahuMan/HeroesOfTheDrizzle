@@ -3,77 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class UntargettedSkill {
+public class UntargettedSkill : BasicSkill{
 
     [SerializeField]
     private ParticleSystem effect;
-    [SerializeField]
-    private float CastDuration = 1f;
-    [SerializeField]
-    private float EffectDuration = 2f;
-    [SerializeField]
-    private float CoolDownTime = 2f;
 
-    private float _currentDuration = -1f;
-    private float _currentCoolDown = -1f;
-    private bool _active = false;
+    public UntargettedSkill(): base("UntargettedSkill")
+    {
+
+    }
 
     public bool Activate()
     {
-        if (_active || !IsAvailable())
+        if (GetStatus() != SkillStatus.READY)
         {
-            Debug.Log("Hero can't activate ability1: timer is " + _currentCoolDown);
+            Debug.Log("Hero can't activate " + _name + ": timer is " + GetCurrentCoolDownTime());
             return false; //can't activate (yet)
         }
 
-        Debug.Log("Hero activated special ability 1");
+        Debug.Log("Hero activated " + _name);
         if (effect) effect.Play();
-        _currentDuration = EffectDuration;
-        _active = true;
-        _currentCoolDown = CoolDownTime;
+        SetStatus(SkillStatus.CASTING);
         return true;
     }
 
     public void DeActivate()
     {
-        if (!_active) return;
-
-        _active = false;
+        SetStatus(SkillStatus.COOLDOWN);
         if (effect) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        //_currentCoolDown = _coolDownTime; //already set during activation
-        Debug.Log("Hero deactivated special ability 1");
+        Debug.Log("Hero deactivated " + _name);
     }
 
-    /**
-     * should be called every frame, to allow for continuous or delayed effects and animations
-     */
-    public void SkillUpdate()
+    override protected void UpdateEffect()
     {
-        if (_active)
-        {
-            _currentDuration -= Time.deltaTime;
-            if (_currentDuration < 0) DeActivate();
-        }
-        else if (_currentCoolDown > 0)
-        {
-            _currentCoolDown -= Time.deltaTime;
-        }
+        base.UpdateEffect();
+        if (GetStatus() == SkillStatus.COOLDOWN) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
-
-    public bool IsActive()
-    {
-        return _active;
-    }
-
-    public bool IsAvailable()
-    {
-        return _currentCoolDown < 0;
-    }
-
-    public float GetCurrentCoolDownTime()
-    {
-        return _currentCoolDown;
-    }
-
 
 }
