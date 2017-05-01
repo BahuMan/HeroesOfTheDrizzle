@@ -9,7 +9,7 @@ public class HeroControl : MonoBehaviour {
     Animator _animator;
 
     //private fields
-    public enum HeroStatus {IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, ABILITY1}
+    public enum HeroStatus {IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, ABILITY1, ABILITY2}
     [SerializeField]
     private HeroStatus status = HeroStatus.IDLE;
     [SerializeField]
@@ -28,7 +28,7 @@ public class HeroControl : MonoBehaviour {
     private UntargettedSkill Ability1;
 
     [SerializeField]
-    private Tar
+    private TargettedSkill Ability2;
 
 	// Use this for initialization
 	void Start () {
@@ -52,6 +52,9 @@ public class HeroControl : MonoBehaviour {
                 break;
             case HeroStatus.ABILITY1:
                 Ability1.SkillUpdate();
+                break;
+            case HeroStatus.ABILITY2:
+                Ability2.SkillUpdate();
                 break;
             default:
                 Debug.LogError("unknown state " + status.ToString());
@@ -86,6 +89,21 @@ public class HeroControl : MonoBehaviour {
             status = HeroStatus.ABILITY1;
         }
     }
+
+    public int GetAbility2Mask()
+    {
+        return Ability2.GetValidTargetMask();
+    }
+
+    public void ActivateAbility2(GameObject target)
+    {
+        //first check legal status? Ability will check correct timing
+        if (this.Ability2.Activate(target))
+        {
+            status = HeroStatus.ABILITY2;
+        }
+    }
+
     /**
      * Possible transitions:
      * -> IDLE (when destination has been reached)

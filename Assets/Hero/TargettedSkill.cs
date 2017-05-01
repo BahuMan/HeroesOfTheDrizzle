@@ -20,18 +20,25 @@ public class TargettedSkill
 
     private GameObject _target;
 
+    public int GetValidTargetMask()
+    {
+        //this ability targets enemies = layer 9
+        return 1 << 9;
+    }
+
     public bool Activate(GameObject target)
     {
         if (status != SkillStatus.READY)
         {
             //@TBD: fizzle existing?
-            Debug.Log("Hero can't activate ability1: timer is " + this.GetCurrentCoolDownTime());
+            Debug.Log("Hero can't activate ability 2: timer is " + this.GetCurrentCoolDownTime());
             return false; //can't activate (yet)
         }
 
         Debug.Log("Hero activated special ability 2 on " + target.name);
+        status = SkillStatus.CASTING;
         _target = target;
-        if (effect) effect.Play();
+        if (effect) effect.Play(true);
         this.lastStatusChange = Time.time;
         return true;
     }
@@ -43,7 +50,7 @@ public class TargettedSkill
         status = SkillStatus.COOLDOWN;
         _target = null;
         if (effect) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        Debug.Log("Hero deactivated special ability 1");
+        Debug.Log("Hero deactivated special ability 2");
     }
 
     /**
@@ -67,17 +74,20 @@ public class TargettedSkill
 
     private void UpdateEffect()
     {
-        if (lastStatusChange + EffectDuration > Time.time)
+
+        if (lastStatusChange + EffectDuration < Time.time)
         {
-            status = SkillStatus.READY;
+            Debug.Log("Hero Ability2 finished -- " + lastStatusChange + " + " + EffectDuration + " < " + Time.time);
+            status = SkillStatus.COOLDOWN;
             lastStatusChange = Time.time;
         }
     }
 
     private void UpdateCasting()
     {
-        if (lastStatusChange + CastDuration > Time.time)
+        if (lastStatusChange + CastDuration < Time.time)
         {
+            Debug.Log("Hero done casting Ability2 -- " + lastStatusChange + " + " + CastDuration + " < " + Time.time);
             status = SkillStatus.EFFECT;
             lastStatusChange = Time.time;
         }
@@ -85,8 +95,9 @@ public class TargettedSkill
 
     private void UpdateCoolDown()
     {
-        if (lastStatusChange + CoolDownTime > Time.time)
+        if (lastStatusChange + CoolDownTime < Time.time)
         {
+            Debug.Log("Hero Ability2 is ready -- " + lastStatusChange + " + " + CoolDownTime + " < " + Time.time);
             status = SkillStatus.READY;
             lastStatusChange = Time.time;
         }

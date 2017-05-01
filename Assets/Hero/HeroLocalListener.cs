@@ -11,7 +11,14 @@ public class HeroLocalListener : MonoBehaviour {
 
     private HeroControl _hero;
     [SerializeField]
+    private Texture2D Ability2Cursor;
+
+    [SerializeField]
     private GameObject marker;
+
+    private enum GUIStatus {NORMAL, ABILITY2SELECT}
+    private GUIStatus status = GUIStatus.NORMAL;
+    private int currentMask;
 
     private const int TerrainLayerMask = 1 << 8;
 
@@ -26,7 +33,54 @@ public class HeroLocalListener : MonoBehaviour {
         {
             _hero.ActivateAbility1();
         }
+        if (Input.GetButtonDown("Ability2"))
+        {
+            //SetCursor generated a warning but does exactly what I expect it to do.
+            Cursor.SetCursor(Ability2Cursor, new Vector2(32, 32), CursorMode.Auto);
+            status = GUIStatus.ABILITY2SELECT;
+            currentMask = _hero.GetAbility2Mask();
+        }
 
+        switch (status)
+        {
+            case GUIStatus.NORMAL:
+                UpdateNormal();
+                break;
+            case GUIStatus.ABILITY2SELECT:
+                UpdateAbility2Select();
+                break;
+        }
+	}
+
+    private void UpdateAbility2Select()
+    {
+        //@TODO: change mouse cursor look based on target currently hovering
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit info;
+            if (Physics.Raycast(ray, out info, 100f, currentMask))
+            {
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                //this.marker.transform.position = info.point;
+                _hero.ActivateAbility2(info.collider.gameObject);
+            }
+            else
+            {
+                Debug.Log("Could not find a valid target for Ability 2");
+            }
+        }
+
+        //right mouse button cancels ability select
+        if (Input.GetMouseButtonDown(1))
+        {
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            status = GUIStatus.NORMAL;
+        }
+    }
+
+    private void UpdateNormal()
+    {
         if (Input.GetButtonDown("Fire1"))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -48,5 +102,5 @@ public class HeroLocalListener : MonoBehaviour {
                 _hero.MoveTo(this.marker.transform);
             }
         }
-	}
+    }
 }
