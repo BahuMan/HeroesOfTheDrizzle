@@ -47,7 +47,7 @@ public class TargettedSkill: BasicSkill
     override protected void UpdateEffect()
     {
         base.UpdateEffect();
-        if (GetStatus() == SkillStatus.COOLDOWN) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        if (GetStatus() != SkillStatus.EFFECT) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
 }
