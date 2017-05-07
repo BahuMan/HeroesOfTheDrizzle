@@ -5,7 +5,6 @@ public class MinionAI : MOBAUnit {
 
     //FIELDS
     //References
-    private Animator _animator;
     private CharacterController _charCtrl;
 
     //editor fields
@@ -14,8 +13,6 @@ public class MinionAI : MOBAUnit {
     [SerializeField]
     private float runSpeed;
     [SerializeField]
-    MOBAUnit.DamageType damageType;
-    [SerializeField]
     private float damagePerAttack;
 
     //private fields
@@ -23,57 +20,127 @@ public class MinionAI : MOBAUnit {
     private int curWaypoint = -1;
 
     //keep track of the enemy we're currently attacking:
-    private HashSet<MOBAUnit> enemiesInSight;
     private MOBAUnit _targetEnemy;
     private float _targetEnemyDistance;
 
-    private const float CloseToWaypoint = 0.4f;
-    private const float CloseToAttack = 1f;
+    private const float CloseEnoughToWaypoint = 0.4f;
+    private const float CloseEnoughToAttack = 1f;
 
     override public void Start () {
         base.Start();
         Debug.Log("MinionAI.Start");
-        _animator = GetComponent<Animator>();
-        enemiesInSight = new HashSet<MOBAUnit>();
-
 	}
 
-    void Update() {
+    override public void UpdateIdle()
+    {
+        CommonUpdate();
+    }
+
+    override public void UpdateWalking()
+    {
+        CommonUpdate();
+    }
+
+    override public void UpdateRunning()
+    {
+        CommonUpdate();
+    }
+
+    override public void UpdateAttacking()
+    {
 
         if (GetHealth() < 0)
         {
-            Debug.Log("Minion has died");
-            Destroy(this.gameObject);
+            SetStatus(UnitStatus.DEATH);
+            return;
         }
 
-        if (enemiesInSight.Count > 0)
+        if (GetNrEnemiesInSight() == 0)
         {
-            Attack();
+            SetStatus(UnitStatus.IDLE);
+            return;
         }
-        else
-        {
-            MoveToWaypoint();
-        }
-        _animator.SetInteger("nrEnemies", enemiesInSight.Count);
-    }
 
-    private void Attack()
-    {
         if (_targetEnemy == null)
         {
-            ChooseClosestEnemy();
+            _targetEnemy = ChooseClosestEnemy();
+            _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
         }
 
         _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
-        _animator.SetFloat("ClosestEnemy", _targetEnemyDistance);
-        if (_targetEnemyDistance > CloseToAttack)
+        GetAnimatorComponent().SetFloat("ClosestEnemy", _targetEnemyDistance);
+        if (_targetEnemyDistance > CloseEnoughToAttack)
         {
-            MoveAttack();
+            SetStatus(UnitStatus.ATTACKRUNNING);
         }
         else
         {
             //do nothing; attack method will be called by animation when sword is thrust forward
             //MeleeAttack();
+        }
+    }
+
+    override public void UpdateAttackRunning()
+    {
+
+        if (GetHealth() < 0)
+        {
+            SetStatus(UnitStatus.DEATH);
+            return;
+        }
+
+        if (GetNrEnemiesInSight() == 0)
+        {
+            SetStatus(UnitStatus.IDLE);
+            return;
+        }
+
+        if (_targetEnemy == null)
+        {
+            _targetEnemy = ChooseClosestEnemy();
+            _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
+        }
+
+        _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
+        GetAnimatorComponent().SetFloat("ClosestEnemy", _targetEnemyDistance);
+        if (_targetEnemyDistance > CloseEnoughToAttack)
+        {
+            GetAnimatorComponent().SetFloat("Speed", 2.0f);
+            Rotate2DTo(_targetEnemy.transform);
+            transform.position += transform.forward * Time.deltaTime * runSpeed;
+        }
+        else
+        {
+            SetStatus(UnitStatus.ATTACKING);
+        }
+
+    }
+
+    override public void UpdateAbility1() { Debug.LogError("Minions don't have any abilities"); }
+    override public void UpdateAbility2() { Debug.LogError("Minions don't have any abilities"); }
+    override public void UpdateDeath()
+    {
+        Debug.Log(this.gameObject.name + " died.");
+        Destroy(this.gameObject);
+    }
+
+
+    private void CommonUpdate() {
+
+        if (GetHealth() < 0)
+        {
+            Debug.Log("Minion has died");
+            SetStatus(UnitStatus.DEATH);
+        }
+
+        if (GetNrEnemiesInSight() > 0)
+        {
+            SetStatus(UnitStatus.ATTACKING);
+        }
+        else
+        {
+            SetStatus(UnitStatus.WALKING);
+            MoveToWaypoint();
         }
     }
 
@@ -86,7 +153,7 @@ public class MinionAI : MOBAUnit {
         //@TODO: what to do when enemy has died by another friendly and I'm still trying to damage it? See OnTriggerExit()
         if (_targetEnemy != null)
         {
-            _targetEnemy.ReceiveDamage(this.damageType, this.damagePerAttack);
+            _targetEnemy.ReceiveDamage(GetDamageType(), this.damagePerAttack);
         }
     }
 
@@ -96,35 +163,15 @@ public class MinionAI : MOBAUnit {
         dest.y = transform.position.y; //set destination at same height to avoid pitch change
         transform.LookAt(dest);
     }
-    private void ChooseClosestEnemy()
-    {
-        _targetEnemyDistance = float.MaxValue;
-        foreach (MOBAUnit enemy in enemiesInSight)
-        {
-            float d = Vector3.Distance(transform.position, enemy.transform.position);
-            if (d < _targetEnemyDistance)
-            {
-                _targetEnemy = enemy;
-                _targetEnemyDistance = d;
-            }
-        }
-        Debug.Log("Attacking " + _targetEnemy.name + " at distance " + _targetEnemyDistance);
 
-    }
 
-    private void MoveAttack()
-    {
-        _animator.SetFloat("Speed", 2.0f);
-        Rotate2DTo(_targetEnemy.transform);
-        transform.position += transform.forward * Time.deltaTime * runSpeed;
-    }
 
     private void MoveToWaypoint()
     {
         if (curWaypoint < 0 || curWaypoint >= _waypoints.Length) return;
 
         float distanceToWaypoint = Vector3.Distance(transform.position, _waypoints[curWaypoint].position);
-        if (distanceToWaypoint < CloseToWaypoint)
+        if (distanceToWaypoint < CloseEnoughToWaypoint)
         {
             ++curWaypoint;
         }
@@ -138,12 +185,12 @@ public class MinionAI : MOBAUnit {
             //_charCtrl.transform.rotation = Quaternion.Slerp(_charCtrl.transform.rotation, targetRotation, rotationSpeed);
             transform.rotation = Quaternion.LookRotation(direction);
             transform.position += direction * walkSpeed * Time.deltaTime;
-            _animator.SetFloat("Speed", 1f);
+            GetAnimatorComponent().SetFloat("Speed", 1f);
         }
         else
         {
             //no more waypoints, and apparently no enemies to attack -> idle
-            _animator.SetFloat("Speed", 0f);
+            GetAnimatorComponent().SetFloat("Speed", 0f);
         }
     }
 
@@ -158,27 +205,4 @@ public class MinionAI : MOBAUnit {
         this.curWaypoint = 0;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
-        if (unit != null && unit.GetAlignment() != this.GetAlignment())
-        {
-            enemiesInSight.Add(unit);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
-        if (unit != null)
-        {
-            enemiesInSight.Remove(unit);
-            if (unit == _targetEnemy)
-            {
-                //out of range; no longer attacking this one
-                //@TODO: setting targetEnemy to null may interact with the MeleeAttack() method
-                _targetEnemy = null;
-            }
-        }
-    }
 }

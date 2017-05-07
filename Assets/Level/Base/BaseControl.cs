@@ -26,7 +26,6 @@ public class BaseControl : MonoBehaviour {
     {
         while (true)
         {
-            yield return new WaitForSeconds(IntervalBetweenLaunches);
             foreach (var l in lanes)
             {
                 for (int m=0; m<nrMinionsToLaunch; ++m)
@@ -37,6 +36,7 @@ public class BaseControl : MonoBehaviour {
                     yield return new WaitForSeconds(IntervalBetweenMinions);
                 }
             }
+            yield return new WaitForSeconds(IntervalBetweenLaunches);
         }
     }
 }

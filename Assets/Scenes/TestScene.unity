@@ -3250,19 +3250,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1401785096066552, guid: 67bf88a1fe8c34d419ef44e29d091977,
     type: 2}
   m_PrefabInternal: {fileID: 1088562234}
---- !u!114 &416626709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 416626706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c04e6d007158a64f9012e2703844d67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 10
-  camp: 0
 --- !u!54 &416626710
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3412,8 +3399,8 @@ MonoBehaviour:
   minionPrefab: {fileID: 114266311393890480, guid: de58b849a089a3549bccb64314df97c0,
     type: 2}
   nrMinionsToLaunch: 2
-  IntervalBetweenLaunches: 15
-  IntervalBetweenMinions: 0.5
+  IntervalBetweenLaunches: 30
+  IntervalBetweenMinions: 1
 --- !u!1 &532816302 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 87eab7de469c06740b6963b720195bb3, type: 3}
@@ -10332,6 +10319,7 @@ GameObject:
   - component: {fileID: 1852233051}
   - component: {fileID: 1852233050}
   - component: {fileID: 1852233049}
+  - component: {fileID: 1852233054}
   m_Layer: 9
   m_Name: Turret
   m_TagString: Untagged
@@ -10377,9 +10365,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9775d98aca49e0a49bb4f355b67f1781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  status: 0
+  damage: 0
   camp: 0
-  damageType: 4
+  maxHealth: 100
   damagePerAttack: 2
   timeBetweenAttacks: 1
 --- !u!136 &1852233052
@@ -10409,6 +10398,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!95 &1852233054
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1852233048}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e7644bec284431c4f95c33124ce2242a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &2131296766
 GameObject:
   m_ObjectHideFlags: 0

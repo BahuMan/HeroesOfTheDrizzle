@@ -1,82 +1,57 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TurretControl : MOBAUnit {
 
-    [SerializeField]
-    MOBAUnit.DamageType damageType;
     [SerializeField]
     private float damagePerAttack;
     [SerializeField]
     private float timeBetweenAttacks;
 
     private float lastAttackTime;
-    private List<MOBAUnit> enemiesInSight;
     private MOBAUnit _targetEnemy;
 
     override public void Start () {
         base.Start();
-        enemiesInSight = new List<MOBAUnit>();
-	}
-	
-	void Update () {
-        
-        //do nothing if dead
-        if (GetHealth() < 0) return;
-
-        //pick an enemy
-        if (_targetEnemy == null && enemiesInSight.Count > 0)
-        {
-            findEnemy();
-        }
-
-        //do nothing if nobody to be attacked
-        if (_targetEnemy == null) return;
-
-        //attack after delay
-        if (lastAttackTime + timeBetweenAttacks < Time.time) {
-            Fire();
-        }
 	}
 
-    private void Fire()
+    override public void UpdateIdle()
     {
-        Debug.Log(gameObject.name + " firing at " + _targetEnemy.name);
-        _targetEnemy.ReceiveDamage(this.damageType, this.damagePerAttack);
-        lastAttackTime = Time.time;
-    }
-
-    private void findEnemy()
-    {
-        _targetEnemy = enemiesInSight[Random.Range(0, enemiesInSight.Count)];
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
-        if (unit != null && unit.GetAlignment() != this.GetAlignment())
+        if (GetHealth() < 0)
         {
-            enemiesInSight.Add(unit);
-            if (enemiesInSight.Count == 1)
-            {
-                _targetEnemy = unit;
-            }
+            SetStatus(UnitStatus.DEATH);
+        }
+        else if (GetNrEnemiesInSight() > 0)
+        {
+            _targetEnemy = ChooseClosestEnemy();
+            SetStatus(UnitStatus.ATTACKING);
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    override public void UpdateAttacking()
     {
-        MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
-        if (unit != null)
+        if (_targetEnemy == null)
         {
-            enemiesInSight.Remove(unit);
-            if (unit == _targetEnemy)
-            {
-                //out of range; no longer attacking this one
-                //@TODO: setting targetEnemy to null may interact with the MeleeAttack() method
-                _targetEnemy = null;
-            }
+            SetStatus(UnitStatus.IDLE);
+            return;
         }
+        if (lastAttackTime + timeBetweenAttacks < Time.time)
+        {
+            Debug.Log(gameObject.name + " firing at " + _targetEnemy.name);
+            _targetEnemy.ReceiveDamage(GetDamageType(), this.damagePerAttack);
+            lastAttackTime = Time.time;
+        }
+    }
+
+    override public void UpdateWalking() { Debug.LogError(gameObject.name + "doesn't walk"); }
+    override public void UpdateRunning() { Debug.LogError(gameObject.name + "doesn't run"); }
+    override public void UpdateAttackRunning() { Debug.LogError(gameObject.name + "doesn't attackrun"); }
+    override public void UpdateAbility1() { Debug.LogError(gameObject.name + "doesn't have ability 1"); }
+    override public void UpdateAbility2() { Debug.LogError(gameObject.name + "doesn't have ability 2"); }
+
+    override public void UpdateDeath()
+    {
+        Debug.Log(gameObject.name + " was destroyed");
+        Destroy(this.gameObject);
     }
 
 }
