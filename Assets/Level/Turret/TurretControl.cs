@@ -10,11 +10,11 @@ public class TurretControl : MOBAUnit {
     private float lastAttackTime;
     private MOBAUnit _targetEnemy;
 
-    override public void Start () {
+    override protected void Start () {
         base.Start();
 	}
 
-    override public void UpdateIdle()
+    override protected void UpdateIdle()
     {
         if (GetHealth() < 0)
         {
@@ -27,7 +27,7 @@ public class TurretControl : MOBAUnit {
         }
     }
 
-    override public void UpdateAttacking()
+    override protected void UpdateAttacking()
     {
         if (_targetEnemy == null)
         {
@@ -42,13 +42,13 @@ public class TurretControl : MOBAUnit {
         }
     }
 
-    override public void UpdateWalking() { Debug.LogError(gameObject.name + "doesn't walk"); }
-    override public void UpdateRunning() { Debug.LogError(gameObject.name + "doesn't run"); }
-    override public void UpdateAttackRunning() { Debug.LogError(gameObject.name + "doesn't attackrun"); }
-    override public void UpdateAbility1() { Debug.LogError(gameObject.name + "doesn't have ability 1"); }
-    override public void UpdateAbility2() { Debug.LogError(gameObject.name + "doesn't have ability 2"); }
+    override protected void UpdateWalking() { Debug.LogError(gameObject.name + "doesn't walk"); }
+    override protected void UpdateRunning() { Debug.LogError(gameObject.name + "doesn't run"); }
+    override protected void UpdateAttackRunning() { Debug.LogError(gameObject.name + "doesn't attackrun"); }
+    override protected void UpdateAbility1() { Debug.LogError(gameObject.name + "doesn't have ability 1"); }
+    override protected void UpdateAbility2() { Debug.LogError(gameObject.name + "doesn't have ability 2"); }
 
-    override public void UpdateDeath()
+    override protected void UpdateDeath()
     {
         Debug.Log(gameObject.name + " was destroyed");
         Destroy(this.gameObject);

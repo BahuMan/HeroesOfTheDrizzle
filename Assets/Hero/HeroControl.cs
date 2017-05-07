@@ -1,21 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class HeroControl : MonoBehaviour {
+public class HeroControl : MOBAUnit {
 
     //FIELDS
-    //References
-    Animator _animator;
 
     //private fields
-    public enum HeroStatus {IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, ABILITY1, ABILITY2}
-    [SerializeField]
-    private HeroStatus status = HeroStatus.IDLE;
     [SerializeField]
     private float walkSpeed = 1.5f;
+    private float runSpeed = 3f;
     private Transform _moveDestination;
-    private GameObject _attackTarget;
+    private MOBAUnit _attackTarget;
     private float _attackDelay = 1f;
     private float _attackedLastTime;
 
@@ -31,39 +28,14 @@ public class HeroControl : MonoBehaviour {
     private TargettedSkill Ability2;
 
 	// Use this for initialization
-	void Start () {
-        _animator = GetComponent<Animator>();
+	override protected void Start () {
+        base.Start();
         _attackedLastTime = 0;
 	}
-	
-	void Update () {
-        switch (status) {
-            case HeroStatus.IDLE:
-                break;
-            case HeroStatus.WALKING:
-            case HeroStatus.RUNNING:
-                UpdateMove();
-                break;
-            case HeroStatus.ATTACKING:
-                UpdateAttack();
-                break;
-            case HeroStatus.ATTACKRUNNING:
-                UpdateAttackMove();
-                break;
-            case HeroStatus.ABILITY1:
-                Ability1.SkillUpdate();
-                break;
-            case HeroStatus.ABILITY2:
-                Ability2.SkillUpdate();
-                break;
-            default:
-                Debug.LogError("unknown state " + status.ToString());
-                break;
-        }
 
-        _animator.SetInteger("HeroStatus", (int)status);
-    }
-
+	/**
+     * This public method is used buy the GUI, the AI or the network to make the hero do something
+     */
     public void MoveTo(Transform target, bool running = false)
     {
         //first check illegal state transitions (are there any?)
@@ -72,54 +44,78 @@ public class HeroControl : MonoBehaviour {
         _moveDestination = target;
         if (running)
         {
-            status = HeroStatus.RUNNING;
+            SetStatus(UnitStatus.RUNNING);
         }
         else
         {
-            status = HeroStatus.WALKING;
+            SetStatus(UnitStatus.WALKING);
         }
         Debug.Log("I'm moving to " + target.name);
     }
 
+    /**
+     * This public method is used buy the GUI, the AI or the network to make the hero do something
+     */
     public void ActivateAbility1()
     {
         //first check legal status? Ability will check correct timing
         if (this.Ability1.Activate())
         {
-            status = HeroStatus.ABILITY1;
+            SetStatus(UnitStatus.ABILITY1);
         }
     }
 
+    /**
+     * Tells the GUI what the "valid" targets are for ability2
+     */
     public int GetAbility2Mask()
     {
         return Ability2.GetValidTargetMask();
     }
 
+    /**
+     * This public method is used buy the GUI, the AI or the network to make the hero do something
+     */
     public void ActivateAbility2(GameObject target)
     {
         //first check legal status? Ability will check correct timing
         if (this.Ability2.Activate(target))
         {
-            status = HeroStatus.ABILITY2;
+            SetStatus(UnitStatus.ABILITY2);
         }
+    }
+
+    protected override void UpdateIdle()
+    {
+        //nuth'n
+    }
+
+    protected override void UpdateWalking()
+    {
+        UpdateMove(walkSpeed);
+    }
+
+    protected override void UpdateRunning()
+    {
+        UpdateMove(runSpeed);
     }
 
     /**
      * Possible transitions:
      * -> IDLE (when destination has been reached)
      */
-    void UpdateMove()
+    private void UpdateMove(float speed)
     {
         Rotate2DTo(_moveDestination);
         float distSqr = (transform.position - _moveDestination.position).sqrMagnitude;
         if (distSqr < closeEnoughForMove)
         {
-            status = HeroStatus.IDLE;
+            SetStatus(UnitStatus.IDLE);
             Debug.Log("I've reached my destination");
         }
         else
         {
-            transform.position += transform.forward * walkSpeed * Time.deltaTime;
+            transform.position += transform.forward * speed * Time.deltaTime;
         }
     }
 
@@ -130,46 +126,58 @@ public class HeroControl : MonoBehaviour {
         transform.LookAt(dest);
     }
 
-    public void Attack(GameObject enemy)
+    /**
+     * public method used by GUI, AI, or network to make the hero do something
+     */
+    public void Attack(MOBAUnit enemy)
     {
         //if necessary, check for illegal state transitions
 
         _attackTarget = enemy;
         if ((enemy.transform.position - transform.position).sqrMagnitude > closeEnoughForAttack)
         {
-            Debug.Log("setting hero status to " + (int)HeroStatus.ATTACKRUNNING);
-            status = HeroStatus.ATTACKRUNNING;
-            UpdateAttackMove();
+            SetStatus(UnitStatus.ATTACKRUNNING);
         }
         else
         {
-            status = HeroStatus.ATTACKING;
-            UpdateAttack();
+            SetStatus(UnitStatus.ATTACKING);
         }
     }
 
-    private void UpdateAttackMove()
+    protected override void UpdateAttackRunning()
     {
         Rotate2DTo(_attackTarget.transform);
         float distSqr = (transform.position - _attackTarget.transform.position).sqrMagnitude;
         if (distSqr < closeEnoughForAttack)
         {
-            status = HeroStatus.ATTACKING;
-            Debug.Log("I've reached my enemy");
-            UpdateAttack();
+            SetStatus(UnitStatus.ATTACKING);
         }
         else
         {
-            transform.position += transform.forward * walkSpeed * Time.deltaTime;
+            transform.position += transform.forward * runSpeed * Time.deltaTime;
         }
     }
 
-    private void UpdateAttack()
+    protected override void UpdateAttacking()
     {
         if (Time.time - _attackedLastTime > _attackDelay)
         {
-            Debug.Log("Hero Attack");
             _attackedLastTime = Time.time;
         }
     }
+
+    protected override void UpdateAbility1()
+    {
+        Ability1.SkillUpdate();
+    }
+    protected override void UpdateAbility2()
+    {
+        Ability2.SkillUpdate();
+    }
+    protected override void UpdateDeath()
+    {
+        Debug.Log(gameObject.name + " died heroically.");
+        Destroy(this.gameObject);
+    }
+
 }

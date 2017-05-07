@@ -8,7 +8,13 @@ AnimatorController:
   m_Name: HeroAnimController
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: HeroStatus
+  - m_Name: UnitStatus
+    m_Type: 3
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: NrEnemies
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -56,7 +62,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: HeroStatus
+    m_ConditionEvent: UnitStatus
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102846077492102796}
@@ -80,7 +86,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: HeroStatus
+    m_ConditionEvent: UnitStatus
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102089944045811254}
@@ -104,7 +110,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: HeroStatus
+    m_ConditionEvent: UnitStatus
     m_EventTreshold: 4
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102676342288616584}
@@ -128,7 +134,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: HeroStatus
+    m_ConditionEvent: UnitStatus
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102846077492102796}
@@ -152,7 +158,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: HeroStatus
+    m_ConditionEvent: UnitStatus
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102846077492102796}

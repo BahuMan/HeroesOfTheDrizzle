@@ -31,7 +31,7 @@ public abstract class MOBAUnit : MonoBehaviour
     private Animator _animator;
     private HashSet<MOBAUnit> enemiesInSight;
 
-    virtual public void Start()
+    virtual protected void Start()
     {
         curHealth = maxHealth;
         status = UnitStatus.IDLE;
@@ -76,14 +76,14 @@ public abstract class MOBAUnit : MonoBehaviour
         _animator.SetInteger("NrEnemies", GetNrEnemiesInSight());
     }
 
-    abstract public void UpdateIdle();
-    abstract public void UpdateWalking();
-    abstract public void UpdateRunning();
-    abstract public void UpdateAttacking();
-    abstract public void UpdateAttackRunning();
-    abstract public void UpdateAbility1();
-    abstract public void UpdateAbility2();
-    abstract public void UpdateDeath();
+    abstract protected void UpdateIdle();
+    abstract protected void UpdateWalking();
+    abstract protected void UpdateRunning();
+    abstract protected void UpdateAttacking();
+    abstract protected void UpdateAttackRunning();
+    abstract protected void UpdateAbility1();
+    abstract protected void UpdateAbility2();
+    abstract protected void UpdateDeath();
 
     /**
      * different types of units may choose to react differently to certain types of damage
@@ -94,7 +94,7 @@ public abstract class MOBAUnit : MonoBehaviour
         return (curHealth < 0);
     }
 
-    public Animator GetAnimatorComponent()
+    protected Animator GetAnimatorComponent()
     {
         return _animator;
     }
@@ -119,7 +119,7 @@ public abstract class MOBAUnit : MonoBehaviour
         return this.status;
     }
 
-    public void SetStatus(UnitStatus newstatus)
+    protected void SetStatus(UnitStatus newstatus)
     {
         this.status = newstatus;
     }
@@ -129,7 +129,7 @@ public abstract class MOBAUnit : MonoBehaviour
         return this.enemiesInSight.Count;
     }
 
-    public IEnumerable<MOBAUnit> GetEnemiesInSight()
+    protected IEnumerable<MOBAUnit> GetEnemiesInSight()
     {
         enemiesInSight.RemoveWhere(isNull);
         return this.enemiesInSight;

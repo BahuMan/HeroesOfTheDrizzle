@@ -26,27 +26,27 @@ public class MinionAI : MOBAUnit {
     private const float CloseEnoughToWaypoint = 0.4f;
     private const float CloseEnoughToAttack = 1f;
 
-    override public void Start () {
+    override protected void Start () {
         base.Start();
         Debug.Log("MinionAI.Start");
 	}
 
-    override public void UpdateIdle()
+    override protected void UpdateIdle()
     {
         CommonUpdate();
     }
 
-    override public void UpdateWalking()
+    override protected void UpdateWalking()
     {
         CommonUpdate();
     }
 
-    override public void UpdateRunning()
+    override protected void UpdateRunning()
     {
         CommonUpdate();
     }
 
-    override public void UpdateAttacking()
+    override protected void UpdateAttacking()
     {
 
         if (GetHealth() < 0)
@@ -80,7 +80,7 @@ public class MinionAI : MOBAUnit {
         }
     }
 
-    override public void UpdateAttackRunning()
+    override protected void UpdateAttackRunning()
     {
 
         if (GetHealth() < 0)
@@ -116,9 +116,9 @@ public class MinionAI : MOBAUnit {
 
     }
 
-    override public void UpdateAbility1() { Debug.LogError("Minions don't have any abilities"); }
-    override public void UpdateAbility2() { Debug.LogError("Minions don't have any abilities"); }
-    override public void UpdateDeath()
+    override protected void UpdateAbility1() { Debug.LogError("Minions don't have any abilities"); }
+    override protected void UpdateAbility2() { Debug.LogError("Minions don't have any abilities"); }
+    override protected void UpdateDeath()
     {
         Debug.Log(this.gameObject.name + " died.");
         Destroy(this.gameObject);

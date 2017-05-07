@@ -21,6 +21,7 @@ public class HeroLocalListener : MonoBehaviour {
     private int currentMask;
 
     private const int TerrainLayerMask = 1 << 8;
+    private const int EnemiesLayerMask = 1 << 9;
 
 	// Use this for initialization
 	void Start () {
@@ -85,10 +86,17 @@ public class HeroLocalListener : MonoBehaviour {
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit info;
-            if (Physics.Raycast(ray, out info, 100f, TerrainLayerMask))
+            if (Physics.Raycast(ray, out info, 100f, EnemiesLayerMask))
             {
-                this.marker.transform.position = info.point;
-                _hero.Attack(this.marker);
+                MOBAUnit t = info.collider.GetComponent<MOBAUnit>();
+                if (t == null)
+                {
+                    Debug.Log(info.collider.gameObject.name + " was not a moba unit?");
+                }
+                else
+                {
+                    _hero.Attack(t);
+                }
             }
         }
 

@@ -13,3 +13,5 @@ Sun 30/4 (4 hrs): basic mouse control + ability1 + GIT
 Mon 01/5 (4 hrs): targetted ability2 + mousecursor + refactor BasicSkill
 Wed 03/5 (3 hrs): admin + todo list + downloaded gaveyard props
 Thu 04/5 (1 hrs): start BaseControl
+Sat 06/5 (3 hrs): refactor minions + Turret
+Sun 07/5 (1 hrs): finish refactor minions + Turret
