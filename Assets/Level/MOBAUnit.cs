@@ -13,7 +13,7 @@ using UnityEngine;
 public abstract class MOBAUnit : MonoBehaviour
 {
 
-    public enum UnitStatus { IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, ABILITY1, ABILITY2, DEATH }
+    public enum UnitStatus { IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, HEARTHSTONE, ABILITY1, ABILITY2, DEATH }
     public enum DamageType { MELEE, FIRE, PIERCE, MAGIC, CRUSH }
     public enum Alliance { NEUTRAL, BLUE, RED }
     [SerializeField]
@@ -58,6 +58,9 @@ public abstract class MOBAUnit : MonoBehaviour
             case UnitStatus.ATTACKRUNNING:
                 UpdateAttackRunning();
                 break;
+            case UnitStatus.HEARTHSTONE:
+                UpdateHearthStone();
+                break;
             case UnitStatus.ABILITY1:
                 UpdateAbility1();
                 break;
@@ -81,6 +84,7 @@ public abstract class MOBAUnit : MonoBehaviour
     abstract protected void UpdateRunning();
     abstract protected void UpdateAttacking();
     abstract protected void UpdateAttackRunning();
+    abstract protected void UpdateHearthStone();
     abstract protected void UpdateAbility1();
     abstract protected void UpdateAbility2();
     abstract protected void UpdateDeath();

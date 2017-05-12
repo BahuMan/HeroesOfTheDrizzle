@@ -116,6 +116,7 @@ public class MinionAI : MOBAUnit {
 
     }
 
+    override protected void UpdateHearthStone() { Debug.LogError("Minions don't have HearthStone"); }
     override protected void UpdateAbility1() { Debug.LogError("Minions don't have any abilities"); }
     override protected void UpdateAbility2() { Debug.LogError("Minions don't have any abilities"); }
     override protected void UpdateDeath()

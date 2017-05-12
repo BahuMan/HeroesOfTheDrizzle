@@ -36,10 +36,7 @@ public class HeroLocalListener : MonoBehaviour {
         }
         if (Input.GetButtonDown("Ability2"))
         {
-            //SetCursor generated a warning but does exactly what I expect it to do.
-            Cursor.SetCursor(Ability2Cursor, new Vector2(32, 32), CursorMode.Auto);
-            status = GUIStatus.ABILITY2SELECT;
-            currentMask = _hero.GetAbility2Mask();
+            SelectTargetForAbility2();
         }
 
         switch (status)
@@ -52,6 +49,14 @@ public class HeroLocalListener : MonoBehaviour {
                 break;
         }
 	}
+
+    public void SelectTargetForAbility2()
+    {
+        //SetCursor generated a warning but does exactly what I expect it to do.
+        Cursor.SetCursor(Ability2Cursor, new Vector2(32, 32), CursorMode.Auto);
+        status = GUIStatus.ABILITY2SELECT;
+        currentMask = _hero.GetAbility2Mask();
+    }
 
     private void UpdateAbility2Select()
     {

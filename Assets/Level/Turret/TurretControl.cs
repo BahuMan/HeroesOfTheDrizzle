@@ -45,6 +45,7 @@ public class TurretControl : MOBAUnit {
     override protected void UpdateWalking() { Debug.LogError(gameObject.name + "doesn't walk"); }
     override protected void UpdateRunning() { Debug.LogError(gameObject.name + "doesn't run"); }
     override protected void UpdateAttackRunning() { Debug.LogError(gameObject.name + "doesn't attackrun"); }
+    override protected void UpdateHearthStone() { Debug.LogError(gameObject.name + "doesn't have HearthStone"); }
     override protected void UpdateAbility1() { Debug.LogError(gameObject.name + "doesn't have ability 1"); }
     override protected void UpdateAbility2() { Debug.LogError(gameObject.name + "doesn't have ability 2"); }
 

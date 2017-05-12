@@ -15,6 +15,8 @@ public class BaseControl : MonoBehaviour {
     private float IntervalBetweenLaunches = 30;
     [SerializeField]
     private float IntervalBetweenMinions = .5f;
+    [SerializeField]
+    private MOBAUnit.Alliance camp;
 
 
 	// Use this for initialization
@@ -38,5 +40,10 @@ public class BaseControl : MonoBehaviour {
             }
             yield return new WaitForSeconds(IntervalBetweenLaunches);
         }
+    }
+
+    public MOBAUnit.Alliance getAlliance()
+    {
+        return this.camp;
     }
 }

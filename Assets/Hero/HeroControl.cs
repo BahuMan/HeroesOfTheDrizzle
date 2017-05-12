@@ -22,10 +22,13 @@ public class HeroControl : MOBAUnit {
     private float closeEnoughForAttack = 1f;
 
     [SerializeField]
-    private UntargettedSkill Ability1;
+    private HearthStoneAbility HearthStone;
 
     [SerializeField]
-    private TargettedSkill Ability2;
+    private UntargettedAbility Ability1;
+
+    [SerializeField]
+    private TargettedAbility Ability2;
 
 	// Use this for initialization
 	override protected void Start () {
@@ -34,7 +37,7 @@ public class HeroControl : MOBAUnit {
 	}
 
 	/**
-     * This public method is used buy the GUI, the AI or the network to make the hero do something
+     * This public method is used by the GUI, the AI or the network to make the hero do something
      */
     public void MoveTo(Transform target, bool running = false)
     {
@@ -51,6 +54,18 @@ public class HeroControl : MOBAUnit {
             SetStatus(UnitStatus.WALKING);
         }
         Debug.Log("I'm moving to " + target.name);
+    }
+
+    /**
+     * This public method is used buy the GUI, the AI or the network to make the hero do something
+     */
+    public void ActivateHearthStone()
+    {
+        //first check legal status? Ability will check correct timing
+        if (this.HearthStone.Activate())
+        {
+            SetStatus(UnitStatus.ABILITY1);
+        }
     }
 
     /**
@@ -87,8 +102,7 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateIdle()
     {
-        Ability1.SkillUpdate();
-        Ability2.SkillUpdate();
+        UpdateAllSkills();
     }
 
     protected override void UpdateWalking()
@@ -107,8 +121,7 @@ public class HeroControl : MOBAUnit {
      */
     private void UpdateMove(float speed)
     {
-        Ability1.SkillUpdate();
-        Ability2.SkillUpdate();
+        UpdateAllSkills();
 
         Rotate2DTo(_moveDestination);
         float distSqr = (transform.position - _moveDestination.position).sqrMagnitude;
@@ -150,8 +163,7 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateAttackRunning()
     {
-        Ability1.SkillUpdate();
-        Ability2.SkillUpdate();
+        UpdateAllSkills();
 
         Rotate2DTo(_attackTarget.transform);
         float distSqr = (transform.position - _attackTarget.transform.position).sqrMagnitude;
@@ -167,8 +179,7 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateAttacking()
     {
-        Ability1.SkillUpdate();
-        Ability2.SkillUpdate();
+        UpdateAllSkills();
 
         if (Time.time - _attackedLastTime > _attackDelay)
         {
@@ -176,23 +187,35 @@ public class HeroControl : MOBAUnit {
         }
     }
 
+    protected override void UpdateHearthStone()
+    {
+        UpdateAllSkills();
+    }
+
     protected override void UpdateAbility1()
     {
-        Ability1.SkillUpdate();
-        Ability2.SkillUpdate();
+        UpdateAllSkills();
     }
     protected override void UpdateAbility2()
     {
-        Ability1.SkillUpdate();
-        Ability2.SkillUpdate();
+        UpdateAllSkills();
     }
     protected override void UpdateDeath()
     {
-        Ability1.SkillUpdate();
-        Ability2.SkillUpdate();
+        UpdateAllSkills();
 
         Debug.Log(gameObject.name + " died heroically.");
         Destroy(this.gameObject);
+    }
+
+    /**
+     * All skills moest be updated every frame so they can perform the cooldown and other effects
+     */
+    private void UpdateAllSkills()
+    {
+        HearthStone.SkillUpdate();
+        Ability1.SkillUpdate();
+        Ability2.SkillUpdate();
     }
 
 }

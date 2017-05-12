@@ -16,3 +16,11 @@ Thu 04/5 (1 hrs): start BaseControl
 Sat 06/5 (3 hrs): refactor minions + Turret
 Sun 07/5 (1 hrs): finish refactor minions + Turret
 Thu 11/5 (2 hrs): refactor hero + replace hero animations + enemy base
+
+
+===================
+Questions
+===================
+1. Paladin animations downloaded "with skin" -> double meshes?
+2. Hero Abilities: how to make them replaceable (variables in Unity Inspector)
+3. where to focus next?
