@@ -15,3 +15,4 @@ Wed 03/5 (3 hrs): admin + todo list + downloaded gaveyard props
 Thu 04/5 (1 hrs): start BaseControl
 Sat 06/5 (3 hrs): refactor minions + Turret
 Sun 07/5 (1 hrs): finish refactor minions + Turret
+Thu 11/5 (2 hrs): refactor hero + replace hero animations + enemy base

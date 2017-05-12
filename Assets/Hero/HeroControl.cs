@@ -87,7 +87,8 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateIdle()
     {
-        //nuth'n
+        Ability1.SkillUpdate();
+        Ability2.SkillUpdate();
     }
 
     protected override void UpdateWalking()
@@ -106,6 +107,9 @@ public class HeroControl : MOBAUnit {
      */
     private void UpdateMove(float speed)
     {
+        Ability1.SkillUpdate();
+        Ability2.SkillUpdate();
+
         Rotate2DTo(_moveDestination);
         float distSqr = (transform.position - _moveDestination.position).sqrMagnitude;
         if (distSqr < closeEnoughForMove)
@@ -146,6 +150,9 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateAttackRunning()
     {
+        Ability1.SkillUpdate();
+        Ability2.SkillUpdate();
+
         Rotate2DTo(_attackTarget.transform);
         float distSqr = (transform.position - _attackTarget.transform.position).sqrMagnitude;
         if (distSqr < closeEnoughForAttack)
@@ -160,6 +167,9 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateAttacking()
     {
+        Ability1.SkillUpdate();
+        Ability2.SkillUpdate();
+
         if (Time.time - _attackedLastTime > _attackDelay)
         {
             _attackedLastTime = Time.time;
@@ -169,13 +179,18 @@ public class HeroControl : MOBAUnit {
     protected override void UpdateAbility1()
     {
         Ability1.SkillUpdate();
+        Ability2.SkillUpdate();
     }
     protected override void UpdateAbility2()
     {
+        Ability1.SkillUpdate();
         Ability2.SkillUpdate();
     }
     protected override void UpdateDeath()
     {
+        Ability1.SkillUpdate();
+        Ability2.SkillUpdate();
+
         Debug.Log(gameObject.name + " died heroically.");
         Destroy(this.gameObject);
     }
