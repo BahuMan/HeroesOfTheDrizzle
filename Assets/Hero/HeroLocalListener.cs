@@ -16,6 +16,7 @@ public class HeroLocalListener : MonoBehaviour {
     [SerializeField]
     private GameObject marker;
 
+    private HeroGUI _heroGUI;
     private enum GUIStatus {NORMAL, ABILITY2SELECT}
     private GUIStatus status = GUIStatus.NORMAL;
     private int currentMask;
@@ -26,6 +27,9 @@ public class HeroLocalListener : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         _hero = GetComponent<HeroControl>();
+        GameObject go = GameObject.FindGameObjectWithTag("HeroGUI");
+        _heroGUI = go.GetComponent<HeroGUI>();
+        _heroGUI.SetLocalHero(this, _hero);
 	}
 	
 	// Update is called once per frame
@@ -49,6 +53,11 @@ public class HeroLocalListener : MonoBehaviour {
                 break;
         }
 	}
+
+    public void ChooseBase(BaseControl homeBase)
+    {
+        _hero.SetHomeBase(homeBase);
+    }
 
     public void SelectTargetForAbility2()
     {

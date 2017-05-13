@@ -41,6 +41,8 @@ public abstract class MOBAUnit : MonoBehaviour
 
     public void Update()
     {
+        if (curHealth < 0) status = UnitStatus.DEATH;
+
         switch (status)
         {
             case UnitStatus.IDLE:
@@ -103,14 +105,24 @@ public abstract class MOBAUnit : MonoBehaviour
         return _animator;
     }
 
-    public float GetHealth()
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public float GetCurrentHealth()
     {
         return curHealth;
     }
 
-    public Alliance GetAlignment()
+    public Alliance GetAlliance()
     {
         return this.camp;
+    }
+
+    virtual public void SetAlliance(Alliance newAlliance)
+    {
+        this.camp = newAlliance;
     }
 
     public DamageType GetDamageType()
@@ -168,7 +180,7 @@ public abstract class MOBAUnit : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
-        if (unit != null && unit.GetAlignment() != this.GetAlignment())
+        if (unit != null && unit.GetAlliance() != this.GetAlliance())
         {
             enemiesInSight.Add(unit);
         }

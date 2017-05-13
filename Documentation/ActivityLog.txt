@@ -21,6 +21,6 @@ Thu 11/5 (2 hrs): refactor hero + replace hero animations + enemy base
 ===================
 Questions
 ===================
-1. Paladin animations downloaded "with skin" -> double meshes?
-2. Hero Abilities: how to make them replaceable (variables in Unity Inspector)
-3. where to focus next?
+1. Paladin animations downloaded "with skin" -> double meshes? yes. redownload.
+2. Hero Abilities: how to make them replaceable (variables in Unity Inspector). NOT. make gameobjects
+3. where to focus next?  

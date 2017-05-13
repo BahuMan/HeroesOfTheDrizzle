@@ -16,7 +16,7 @@ public class TurretControl : MOBAUnit {
 
     override protected void UpdateIdle()
     {
-        if (GetHealth() < 0)
+        if (GetCurrentHealth() < 0)
         {
             SetStatus(UnitStatus.DEATH);
         }

@@ -22,6 +22,7 @@ public class HearthStoneAbility: UntargettedAbility
     override protected void UpdateEffect()
     {
         base.UpdateEffect();
+        Debug.Log("Going Home");
         _hero.transform.position = _hearthStone.transform.position;
         _hero.transform.rotation = _hearthStone.transform.rotation;
         this.SetStatus(SkillStatus.COOLDOWN);

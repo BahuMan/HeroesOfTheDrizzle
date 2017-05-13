@@ -49,12 +49,6 @@ public class MinionAI : MOBAUnit {
     override protected void UpdateAttacking()
     {
 
-        if (GetHealth() < 0)
-        {
-            SetStatus(UnitStatus.DEATH);
-            return;
-        }
-
         if (GetNrEnemiesInSight() == 0)
         {
             SetStatus(UnitStatus.IDLE);
@@ -82,12 +76,6 @@ public class MinionAI : MOBAUnit {
 
     override protected void UpdateAttackRunning()
     {
-
-        if (GetHealth() < 0)
-        {
-            SetStatus(UnitStatus.DEATH);
-            return;
-        }
 
         if (GetNrEnemiesInSight() == 0)
         {
@@ -126,14 +114,8 @@ public class MinionAI : MOBAUnit {
     }
 
 
-    private void CommonUpdate() {
-
-        if (GetHealth() < 0)
-        {
-            Debug.Log("Minion has died");
-            SetStatus(UnitStatus.DEATH);
-        }
-
+    private void CommonUpdate()
+    {
         if (GetNrEnemiesInSight() > 0)
         {
             SetStatus(UnitStatus.ATTACKING);
