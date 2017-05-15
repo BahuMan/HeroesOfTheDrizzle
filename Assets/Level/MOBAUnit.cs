@@ -135,7 +135,7 @@ public abstract class MOBAUnit : MonoBehaviour
         return this.status;
     }
 
-    protected void SetStatus(UnitStatus newstatus)
+    public void SetStatus(UnitStatus newstatus)
     {
         this.status = newstatus;
     }

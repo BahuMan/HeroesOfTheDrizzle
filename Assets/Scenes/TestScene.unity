@@ -320,7 +320,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -794320524
+  randomSeed: 920518504
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3528,7 +3528,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.6544118, g: 0.6544118, b: 0.6544118, a: 0.535}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3581,7 +3581,7 @@ MonoBehaviour:
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -4179,29 +4179,6 @@ MonoBehaviour:
   closeEnoughForMove: 0.4
   closeEnoughForAttack: 1
   _maxMana: 100
-  MyList:
-  - CastDuration: 0
-    EffectDuration: 0
-    CoolDownTime: 0
-  - CastDuration: 0
-    EffectDuration: 0
-    CoolDownTime: 0
-  HearthStone:
-    CastDuration: 0
-    EffectDuration: 0
-    CoolDownTime: 0
-    _effect: {fileID: 0}
-    _hearthStone: {fileID: 0}
-  Ability1:
-    CastDuration: 1
-    EffectDuration: 2
-    CoolDownTime: 3
-    _effect: {fileID: 777500477}
-  Ability2:
-    CastDuration: 1
-    EffectDuration: 2
-    CoolDownTime: 2
-    effect: {fileID: 790340502}
 --- !u!114 &532816304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4215,10 +4192,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ability2Cursor: {fileID: 2800000, guid: 4760e3495fe26ca43a5367d6fecc3e84, type: 3}
   marker: {fileID: 1412244098}
+--- !u!114 &532816305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 532816302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47136314b268a4c4495211810eb95867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityName: 
+  CastDuration: 1
+  EffectDuration: 3
+  CoolDownTime: 5
+  effect: {fileID: 790340502}
 --- !u!4 &532816306 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 87eab7de469c06740b6963b720195bb3, type: 3}
   m_PrefabInternal: {fileID: 1692264389}
+--- !u!114 &532816307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 532816302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af650718cdf825740bf6e907a622add9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityName: 
+  CastDuration: 1
+  EffectDuration: 3
+  CoolDownTime: 5
+  _effect: {fileID: 777500477}
+--- !u!114 &532816308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 532816302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3546b4a3da372914989f2d392a659cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityName: HearthStone
+  CastDuration: 1
+  EffectDuration: 0.1
+  CoolDownTime: 5
+  _effect: {fileID: 0}
+  _hearthStoneLocation: {fileID: 0}
 --- !u!1 &611787821
 GameObject:
   m_ObjectHideFlags: 0
@@ -5145,7 +5171,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 445541037
+  randomSeed: -1025629423
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -8523,7 +8549,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1272230571
+  randomSeed: -1765344197
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -12420,7 +12446,7 @@ MonoBehaviour:
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -13447,7 +13473,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 338993338
+  randomSeed: -442214419
   InitialModule:
     serializedVersion: 3
     enabled: 1

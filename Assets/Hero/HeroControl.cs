@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class HeroControl : MOBAUnit {
 
     //FIELDS
@@ -12,7 +8,7 @@ public class HeroControl : MOBAUnit {
     [SerializeField]
     private float walkSpeed = 1.5f;
     private float runSpeed = 3f;
-    private Transform _moveDestination;
+    private Vector3 _moveDestination;
     private MOBAUnit _attackTarget;
     private float _attackDelay = 1f;
     private float _attackedLastTime;
@@ -26,31 +22,28 @@ public class HeroControl : MOBAUnit {
     private float _maxMana;
     private float _curMana;
 
-    public List<BasicAbility> MyList = new List<BasicAbility>();
-
+    //references
+    private HearthStoneAbility _hearthStone;
+    private UntargettedAbility _ability1;
+    private TargettedAbility   _ability2;
     private BaseControl _homeBase;
-
-    [SerializeField]
-    private HearthStoneAbility HearthStone;
-    [SerializeField]
-    private UntargettedAbility Ability1;
-    [SerializeField]
-    private TargettedAbility Ability2;
-
-    //will be used to remember what status to return to, after casting a spell
-    private MOBAUnit.UnitStatus _lastStatusBeforeCasting;
 
 	// Use this for initialization
 	override protected void Start () {
         base.Start();
         _curMana = 0;
         _attackedLastTime = 0;
+
+        _hearthStone = GetComponent<HearthStoneAbility>();
+        _ability1 = GetComponent<UntargettedAbility>();
+        _ability2 = GetComponent<TargettedAbility>();
+
 	}
 
 	/**
      * This public method is used by the GUI, the AI or the network to make the hero do something
      */
-    public void MoveTo(Transform target, bool running = false)
+    public void MoveTo(Vector3 target, bool running = false)
     {
         //first check illegal state transitions (are there any?)
 
@@ -64,7 +57,6 @@ public class HeroControl : MOBAUnit {
         {
             SetStatus(UnitStatus.WALKING);
         }
-        Debug.Log("I'm moving to " + target.name);
     }
 
     /**
@@ -73,14 +65,15 @@ public class HeroControl : MOBAUnit {
     public void ActivateHearthStone()
     {
         //first check legal status? Ability will check correct timing
-        if (this.HearthStone.Activate())
+        if (this._hearthStone.Activate())
         {
-            SetStatus(UnitStatus.ABILITY1);
+            //hero status should be changed by ability
+            SetStatus(UnitStatus.HEARTHSTONE);
         }
     }
     public float GetHearthStoneCoolDown()
     {
-        return HearthStone.GetCurrentCoolDownTime();
+        return _hearthStone.GetCurrentCoolDownTime();
     }
 
     /**
@@ -89,15 +82,15 @@ public class HeroControl : MOBAUnit {
     public void ActivateAbility1()
     {
         //first check legal status? Ability will check correct timing
-        if (this.Ability1.Activate())
+        if (_ability1.Activate())
         {
-            _lastStatusBeforeCasting = GetStatus();
+            //hero status should be changed by ability
             SetStatus(UnitStatus.ABILITY1);
         }
     }
     public float GetAbility1CoolDown()
     {
-        return Ability1.GetCurrentCoolDownTime();
+        return _ability1.GetCurrentCoolDownTime();
     }
 
     /**
@@ -105,11 +98,11 @@ public class HeroControl : MOBAUnit {
      */
     public int GetAbility2Mask()
     {
-        return Ability2.GetValidTargetMask();
+        return _ability2.GetValidTargetMask();
     }
     public float GetAbility2CoolDown()
     {
-        return Ability2.GetCurrentCoolDownTime();
+        return _ability2.GetCurrentCoolDownTime();
     }
 
     /**
@@ -118,16 +111,15 @@ public class HeroControl : MOBAUnit {
     public void ActivateAbility2(GameObject target)
     {
         //first check legal status? Ability will check correct timing
-        if (this.Ability2.Activate(target))
+        if (_ability2.Activate(target))
         {
-            _lastStatusBeforeCasting = GetStatus();
+            //hero status should be changed by ability
             SetStatus(UnitStatus.ABILITY2);
         }
     }
 
     protected override void UpdateIdle()
     {
-        UpdateAllSkills();
     }
 
     protected override void UpdateWalking()
@@ -146,10 +138,8 @@ public class HeroControl : MOBAUnit {
      */
     private void UpdateMove(float speed)
     {
-        UpdateAllSkills();
-
         Rotate2DTo(_moveDestination);
-        float distSqr = (transform.position - _moveDestination.position).sqrMagnitude;
+        float distSqr = (transform.position - _moveDestination).sqrMagnitude;
         if (distSqr < closeEnoughForMove)
         {
             SetStatus(UnitStatus.IDLE);
@@ -161,9 +151,8 @@ public class HeroControl : MOBAUnit {
         }
     }
 
-    private void Rotate2DTo(Transform target)
+    private void Rotate2DTo(Vector3 dest)
     {
-        Vector3 dest = target.position;
         dest.y = transform.position.y; //set destination at same height to avoid pitch change
         transform.LookAt(dest);
     }
@@ -188,9 +177,7 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateAttackRunning()
     {
-        UpdateAllSkills();
-
-        Rotate2DTo(_attackTarget.transform);
+        Rotate2DTo(_attackTarget.transform.position);
         float distSqr = (transform.position - _attackTarget.transform.position).sqrMagnitude;
         if (distSqr < closeEnoughForAttack)
         {
@@ -204,8 +191,6 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateAttacking()
     {
-        UpdateAllSkills();
-
         if (Time.time - _attackedLastTime > _attackDelay)
         {
             _attackedLastTime = Time.time;
@@ -214,40 +199,18 @@ public class HeroControl : MOBAUnit {
 
     protected override void UpdateHearthStone()
     {
-        UpdateAllSkills();
-        //when ability is done casting, hero should become status "idle"
-        if (HearthStone.GetStatus() != BasicAbility.SkillStatus.CASTING) SetStatus(MOBAUnit.UnitStatus.IDLE);
     }
 
     protected override void UpdateAbility1()
     {
-        UpdateAllSkills();
-        //when ability is done casting, hero should become whatever status before the casting (usually attacking or idle)
-        if (Ability1.GetStatus() != BasicAbility.SkillStatus.CASTING) SetStatus(_lastStatusBeforeCasting);
     }
     protected override void UpdateAbility2()
     {
-        UpdateAllSkills();
-        //when ability is done casting, hero should become whatever status before the casting (usually attacking or idle)
-        if (Ability2.GetStatus() != BasicAbility.SkillStatus.CASTING) SetStatus(_lastStatusBeforeCasting);
     }
     protected override void UpdateDeath()
     {
-        UpdateAllSkills();
-
         Debug.Log(gameObject.name + " died heroically.");
         Destroy(this.gameObject);
-    }
-
-    /**
-     * All skills moest be updated every frame so they can perform the cooldown and other effects
-     * @TODO: perhaps coroutines are beter suited?
-     */
-    private void UpdateAllSkills()
-    {
-        HearthStone.SkillUpdate();
-        Ability1.SkillUpdate();
-        Ability2.SkillUpdate();
     }
 
     public float GetCurrentMana()
@@ -263,6 +226,7 @@ public class HeroControl : MOBAUnit {
     public void SetHomeBase(BaseControl homeBase)
     {
         this._homeBase = homeBase;
+        _hearthStone.SetHearthStone(homeBase.SpawnPoint);
         this.SetAlliance(homeBase.getAlliance());
     }
 }

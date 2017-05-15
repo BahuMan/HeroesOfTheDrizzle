@@ -1,16 +1,11 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
 public class TargettedAbility: BasicAbility
 {
     [SerializeField]
     private ParticleSystem effect;
 
     private GameObject _target;
-
-    public TargettedAbility(HeroControl owner): base(owner, "Targetted Ability2")
-    {
-    }
 
     virtual public int GetValidTargetMask()
     {
@@ -23,11 +18,11 @@ public class TargettedAbility: BasicAbility
         if (GetStatus() != SkillStatus.READY)
         {
             //@TBD: fizzle existing?
-            Debug.Log("Hero can't activate " + _name + ": timer is " + this.GetCurrentCoolDownTime());
+            Debug.Log(_hero.name + " can't activate " + AbilityName + ": timer is " + this.GetCurrentCoolDownTime());
             return false; //can't activate (yet)
         }
 
-        Debug.Log("Hero activated " + _name + " on " + target.name);
+        Debug.Log(_hero.name + " activated " + AbilityName + " on " + target.name);
         SetStatus(SkillStatus.CASTING);
         _target = target;
         if (effect) effect.Play(true);
@@ -41,7 +36,7 @@ public class TargettedAbility: BasicAbility
         SetStatus(SkillStatus.COOLDOWN);
         _target = null;
         if (effect) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        Debug.Log("Hero deactivated special ability 2");
+        Debug.Log(_hero.name + "deactivated " + AbilityName);
     }
 
     override protected void UpdateEffect()

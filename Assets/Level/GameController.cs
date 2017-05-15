@@ -4,17 +4,16 @@ public class GameController : MonoBehaviour {
 
     public BaseControl _baseBLUE;
     public BaseControl _baseRED;
-
+    
     [SerializeField]
-    private HeroControl[] heroes;
+    private HeroControl[] _heroes;
 
 	// Use this for initialization
 	void Start () {
-        heroes[0].SetHomeBase(_baseBLUE);
+        _heroes[0].SetHomeBase(_baseBLUE);
+
+        HeroGUI g = GameObject.FindGameObjectWithTag("HeroGUI").GetComponent<HeroGUI>();
+        g.SetLocalHero(_heroes[0]);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

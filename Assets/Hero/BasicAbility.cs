@@ -3,9 +3,12 @@
 /**
  * Base class for any skill; continuous, targettable and non-targettable
  */
-[System.Serializable]
-public class BasicAbility
+[RequireComponent(typeof(HeroControl))]
+public class BasicAbility: MonoBehaviour
 {
+
+    public string AbilityName;
+
     [SerializeField]
     protected float CastDuration = 1f;
     [SerializeField]
@@ -14,18 +17,21 @@ public class BasicAbility
     protected float CoolDownTime = 5f;
 
     protected HeroControl _hero;
-    protected string _name;
     public enum SkillStatus { READY, CASTING, EFFECT, COOLDOWN}
     private SkillStatus status = SkillStatus.READY;
     protected float lastStatusChange;
 
-    protected BasicAbility(HeroControl owner, string name)
+    virtual protected void Start()
     {
-        _hero = owner;
-        _name = name;
+        _hero = GetComponent<HeroControl>();
     }
 
-    public void SkillUpdate()
+
+    /**
+     * Update can't be overridden by derived; you should override one of the
+     * specific methods UpdateReady(), UpdateCasting(), UpdateEffect(), UpdateCoolDown()
+     */
+    public void Update()
     {
         switch (status)
         {
@@ -51,13 +57,13 @@ public class BasicAbility
     }
 
     /**
-     * you must call this method from the overriding method to have a timed casting
+     * you must call this method from the overriding method for the casting to end after a limited time
      */
     virtual protected void UpdateCasting()
     {
         if (lastStatusChange + CastDuration < Time.time)
         {
-            Debug.Log("Hero done casting " + _name);
+            Debug.Log(_hero.name + " done casting " + AbilityName);
             status = SkillStatus.EFFECT;
             lastStatusChange = Time.time;
         }
@@ -70,16 +76,20 @@ public class BasicAbility
     {
         if (lastStatusChange + EffectDuration < Time.time)
         {
-            Debug.Log("Hero finished " + _name);
+            Debug.Log(_hero.name + " finished " + AbilityName);
             status = SkillStatus.COOLDOWN;
             lastStatusChange = Time.time;
         }
     }
+
+    /**
+     * you must call this method from the overriding method for the cooldown to end after a limited time
+     */
     virtual protected void UpdateCoolDown()
     {
         if (lastStatusChange + CoolDownTime < Time.time)
         {
-            Debug.Log("Hero ready to cast " + _name);
+            Debug.Log(_hero.name + " ready to cast " + AbilityName);
             status = SkillStatus.READY;
             lastStatusChange = Time.time;
         }
@@ -95,6 +105,7 @@ public class BasicAbility
         if (status != newStatus) lastStatusChange = Time.time;
         status = newStatus;
     }
+
     public bool IsActive()
     {
         return status == SkillStatus.CASTING || status == SkillStatus.EFFECT;

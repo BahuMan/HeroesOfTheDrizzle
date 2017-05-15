@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class BaseControl : MonoBehaviour {
 
-    [SerializeField]
-    private Transform SpawnPoint;
+    public Transform SpawnPoint;
     [SerializeField]
     private Lane[] lanes;
     [SerializeField]

@@ -1,32 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[System.Serializable]
 public class UntargettedAbility : BasicAbility{
 
     [SerializeField]
     protected ParticleSystem _effect;
 
-    public UntargettedAbility(HeroControl owner): base(owner, "UntargettedAbility")
-    {
-
-    }
-    public UntargettedAbility(HeroControl owner, string name): base(owner, name)
-    {
-
-    }
+    protected MOBAUnit.UnitStatus _previousStatus;
 
     public bool Activate()
     {
         if (GetStatus() != SkillStatus.READY)
         {
-            Debug.Log("Hero can't activate " + _name + ": timer is " + GetCurrentCoolDownTime());
+            Debug.Log(_hero.name + " can't activate " + AbilityName + ": timer is " + GetCurrentCoolDownTime());
             return false; //can't activate (yet)
         }
 
-        Debug.Log("Hero activated " + _name);
+        Debug.Log(_hero.name + " activated " + AbilityName);
         if (_effect) _effect.Play();
+        _previousStatus = _hero.GetStatus();
         SetStatus(SkillStatus.CASTING);
         return true;
     }
@@ -35,13 +26,15 @@ public class UntargettedAbility : BasicAbility{
     {
         SetStatus(SkillStatus.COOLDOWN);
         if (_effect) _effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        Debug.Log("Hero deactivated " + _name);
+        Debug.Log(_hero.name + " deactivated " + AbilityName);
     }
 
     protected override void UpdateCoolDown()
     {
         base.UpdateCoolDown();
-        _effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        //if hero still thinks we're casting, change their status:
+        if (_hero.GetStatus() == MOBAUnit.UnitStatus.ABILITY1) _hero.SetStatus(_previousStatus);
+        if (_effect) _effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
 }
