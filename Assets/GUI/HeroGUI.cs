@@ -24,7 +24,7 @@ public class HeroGUI : MonoBehaviour {
     private int currentMask;
 
     private const int TerrainLayerMask = 1 << 8;
-    private const int EnemiesLayerMask = 1 << 9;
+    private const int UnitsLayerMask = 1 << 9;
 
     // Use this for initialization
     void Start () {
@@ -101,7 +101,7 @@ public class HeroGUI : MonoBehaviour {
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit info;
-            if (Physics.Raycast(ray, out info, 100f, EnemiesLayerMask))
+            if (Physics.Raycast(ray, out info, 100f, UnitsLayerMask))
             {
                 MOBAUnit t = info.collider.GetComponent<MOBAUnit>();
                 if (t == null)

@@ -4,28 +4,32 @@ public class HeroControl : MOBAUnit {
 
     //FIELDS
 
-    //private fields
+    //references to abilities
+    [SerializeField]
+    private HearthStoneAbility _hearthStone;
+    [SerializeField]
+    private UntargettedAbility _ability1;
+    [SerializeField]
+    private TargettedAbility _ability2;
+
     [SerializeField]
     private float walkSpeed = 1.5f;
+    [SerializeField]
     private float runSpeed = 3f;
-    private Vector3 _moveDestination;
-    private MOBAUnit _attackTarget;
-    private float _attackDelay = 1f;
-    private float _attackedLastTime;
-
     [SerializeField]
     private float closeEnoughForMove = 0.4f;
     [SerializeField]
     private float closeEnoughForAttack = 1f;
-    
+
     [SerializeField]
     private float _maxMana;
-    private float _curMana;
 
-    //references
-    private HearthStoneAbility _hearthStone;
-    private UntargettedAbility _ability1;
-    private TargettedAbility   _ability2;
+    //privates
+    private float _curMana;
+    private Vector3 _moveDestination;
+    private MOBAUnit _attackTarget;
+    private float _attackDelay = 1f;
+    private float _attackedLastTime;
     private BaseControl _homeBase;
 
 	// Use this for initialization
@@ -33,10 +37,6 @@ public class HeroControl : MOBAUnit {
         base.Start();
         _curMana = 0;
         _attackedLastTime = 0;
-
-        _hearthStone = GetComponent<HearthStoneAbility>();
-        _ability1 = GetComponent<UntargettedAbility>();
-        _ability2 = GetComponent<TargettedAbility>();
 
 	}
 
@@ -111,6 +111,7 @@ public class HeroControl : MOBAUnit {
     public void ActivateAbility2(GameObject target)
     {
         //first check legal status? Ability will check correct timing
+        Rotate2DTo(target.transform.position);
         if (_ability2.Activate(target))
         {
             //hero status should be changed by ability
@@ -209,8 +210,11 @@ public class HeroControl : MOBAUnit {
     }
     protected override void UpdateDeath()
     {
-        Debug.Log(gameObject.name + " died heroically.");
-        Destroy(this.gameObject);
+    }
+
+    protected void DeathAnimationDone()
+    {
+        Destroy(this.gameObject, 5f);
     }
 
     public float GetCurrentMana()

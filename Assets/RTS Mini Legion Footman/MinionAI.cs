@@ -133,7 +133,6 @@ public class MinionAI : MOBAUnit {
     public void MeleeAttack()
     {
         //Debug.Log("Melee Attack");
-        //@TODO: what to do when enemy has died by another friendly and I'm still trying to damage it? See OnTriggerExit()
         if (_targetEnemy != null)
         {
             _targetEnemy.ReceiveDamage(GetDamageType(), this.damagePerAttack);

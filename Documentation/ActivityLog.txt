@@ -28,6 +28,10 @@ Questions
       => debug existing and add fluff (particle effects, attack anim)
 ===================
 Sat 13/5 (3 hrs): fix gui bug, refactor abilities (question 2)
+Mon 15/5 (2 hrs): reimport Paladin anim (question 1) + fix, import particles (question 3)
+Mon 15/5 (4 hrs): debug hero status, add new abilities, investigate particles
+Wed 17/5 (4 hrs): create new particle systems, create 2 new abilities, investigate bug where beta attacks on left mouse click
+
 
 
     public enum UnitStatus { IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, HEARTHSTONE, ABILITY1, ABILITY2, DEATH }

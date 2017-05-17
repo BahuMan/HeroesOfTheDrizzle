@@ -29,7 +29,7 @@ public class TurretControl : MOBAUnit {
 
     override protected void UpdateAttacking()
     {
-        if (_targetEnemy == null)
+        if (GetNrEnemiesInSight() == 0 || _targetEnemy == null)
         {
             SetStatus(UnitStatus.IDLE);
             return;

@@ -3,7 +3,6 @@
 /**
  * Base class for any skill; continuous, targettable and non-targettable
  */
-[RequireComponent(typeof(HeroControl))]
 public class BasicAbility: MonoBehaviour
 {
 
@@ -23,7 +22,7 @@ public class BasicAbility: MonoBehaviour
 
     virtual protected void Start()
     {
-        _hero = GetComponent<HeroControl>();
+        _hero = GetComponentInParent<HeroControl>();
     }
 
 
@@ -77,10 +76,16 @@ public class BasicAbility: MonoBehaviour
         if (lastStatusChange + EffectDuration < Time.time)
         {
             Debug.Log(_hero.name + " finished " + AbilityName);
-            status = SkillStatus.COOLDOWN;
-            lastStatusChange = Time.time;
+            DeActivate();
         }
     }
+
+    virtual public void DeActivate()
+    {
+        SetStatus(SkillStatus.COOLDOWN);
+        Debug.Log(_hero.name + " deactivated " + AbilityName);
+    }
+
 
     /**
      * you must call this method from the overriding method for the cooldown to end after a limited time

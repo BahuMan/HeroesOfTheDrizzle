@@ -7,7 +7,7 @@ public class UntargettedAbility : BasicAbility{
 
     protected MOBAUnit.UnitStatus _previousStatus;
 
-    public bool Activate()
+    virtual public bool Activate()
     {
         if (GetStatus() != SkillStatus.READY)
         {
@@ -22,13 +22,11 @@ public class UntargettedAbility : BasicAbility{
         return true;
     }
 
-    public void DeActivate()
+    public override void DeActivate()
     {
-        SetStatus(SkillStatus.COOLDOWN);
+        base.DeActivate();
         if (_effect) _effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        Debug.Log(_hero.name + " deactivated " + AbilityName);
     }
-
     protected override void UpdateCoolDown()
     {
         base.UpdateCoolDown();

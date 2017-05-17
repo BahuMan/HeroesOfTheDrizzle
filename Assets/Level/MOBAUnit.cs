@@ -17,15 +17,16 @@ public abstract class MOBAUnit : MonoBehaviour
     public enum DamageType { MELEE, FIRE, PIERCE, MAGIC, CRUSH }
     public enum Alliance { NEUTRAL, BLUE, RED }
     [SerializeField]
-    private UnitStatus status;
+    private UnitStatus _status;
     [SerializeField]
-    private DamageType damage;
+    private DamageType _damage;
     [SerializeField]
-    private Alliance camp;
+    private Alliance _camp;
 
     [SerializeField]
-    private float maxHealth;
-    private float curHealth;
+    private float _maxHealth;
+    [SerializeField]
+    private float _curHealth;
 
     //references
     private Animator _animator;
@@ -33,17 +34,17 @@ public abstract class MOBAUnit : MonoBehaviour
 
     virtual protected void Start()
     {
-        curHealth = maxHealth;
-        status = UnitStatus.IDLE;
+        _curHealth = _maxHealth;
+        _status = UnitStatus.IDLE;
         _animator = GetComponent<Animator>();
         enemiesInSight = new HashSet<MOBAUnit>();
     }
 
     public void Update()
     {
-        if (curHealth < 0) status = UnitStatus.DEATH;
+        if (_curHealth < 0) _status = UnitStatus.DEATH;
 
-        switch (status)
+        switch (_status)
         {
             case UnitStatus.IDLE:
                 UpdateIdle();
@@ -73,11 +74,11 @@ public abstract class MOBAUnit : MonoBehaviour
                 UpdateDeath();
                 break;
             default:
-                Debug.LogError("unknown state " + status.ToString());
+                Debug.LogError("unknown state " + _status.ToString());
                 break;
         }
 
-        _animator.SetInteger("UnitStatus", (int)status);
+        _animator.SetInteger("UnitStatus", (int)_status);
         _animator.SetInteger("NrEnemies", GetNrEnemiesInSight());
     }
 
@@ -96,8 +97,8 @@ public abstract class MOBAUnit : MonoBehaviour
      */
     virtual public bool ReceiveDamage(DamageType t, float damage)
     {
-        curHealth -= damage;
-        return (curHealth < 0);
+        _curHealth -= damage;
+        return (_curHealth < 0);
     }
 
     protected Animator GetAnimatorComponent()
@@ -107,37 +108,37 @@ public abstract class MOBAUnit : MonoBehaviour
 
     public float GetMaxHealth()
     {
-        return maxHealth;
+        return _maxHealth;
     }
 
     public float GetCurrentHealth()
     {
-        return curHealth;
+        return _curHealth;
     }
 
     public Alliance GetAlliance()
     {
-        return this.camp;
+        return this._camp;
     }
 
     virtual public void SetAlliance(Alliance newAlliance)
     {
-        this.camp = newAlliance;
+        this._camp = newAlliance;
     }
 
     public DamageType GetDamageType()
     {
-        return this.damage;
+        return this._damage;
     }
 
     public UnitStatus GetStatus()
     {
-        return this.status;
+        return this._status;
     }
 
     public void SetStatus(UnitStatus newstatus)
     {
-        this.status = newstatus;
+        this._status = newstatus;
     }
 
     public int GetNrEnemiesInSight()
@@ -145,7 +146,7 @@ public abstract class MOBAUnit : MonoBehaviour
         return this.enemiesInSight.Count;
     }
 
-    protected IEnumerable<MOBAUnit> GetEnemiesInSight()
+    public IEnumerable<MOBAUnit> GetEnemiesInSight()
     {
         enemiesInSight.RemoveWhere(isNull);
         return this.enemiesInSight;
