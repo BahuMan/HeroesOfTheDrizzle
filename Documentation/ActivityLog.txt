@@ -31,7 +31,23 @@ Sat 13/5 (3 hrs): fix gui bug, refactor abilities (question 2)
 Mon 15/5 (2 hrs): reimport Paladin anim (question 1) + fix, import particles (question 3)
 Mon 15/5 (4 hrs): debug hero status, add new abilities, investigate particles
 Wed 17/5 (4 hrs): create new particle systems, create 2 new abilities, investigate bug where beta attacks on left mouse click
-
+Thu 18/5 (5 hrs): fixed coupling animation <-> hero status (needs refactoring), added fireball ability + particlesystem + prefab
+==================
+MILESTONE 2
+==================
+  new hero: paladin with sword, has 2 damage-dealing abilities + particle effects (movement animation OK, except rotation)
+  old hero beta: has 2 healing abilities with particle effects (movement animations need work)
+  GUI health bar shows hero's current health
+  GUI buttons activate all 3 abilities (todo: show active/inactive + timer, fix bug where left-click also forces attack status)
+  stub gamecontroller couples GUI with first hero in list (todo: allow choice of hero)
+  red and blue bases spawn minions, minions attack each other and then resume walk to waypoints
+  turret (current model: statue of a hooded & robed figure on a socket) is neutral and attacks blue AND red
+  TODO: clipping for minions (they should bump into each other)
+  TODO: offer hero level-up choice in GUI
+  TODO: AI for hero
+  TODO: make turret attack visible
+  TODO: win/loss condition when base is destroyed
+==================
 
 
     public enum UnitStatus { IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, HEARTHSTONE, ABILITY1, ABILITY2, DEATH }

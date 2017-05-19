@@ -191,7 +191,7 @@ ModelImporter:
       - time: 0.459854
         functionName: CastHearthStoneSpell
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 3546b4a3da372914989f2d392a659cc7,
+        objectReferenceParameter: {fileID: 11500000, guid: 2f1c02d0e8df50d49894fad6d86b645f,
           type: 3}
         floatParameter: 0
         intParameter: 0
@@ -199,7 +199,7 @@ ModelImporter:
       - time: 0.82919705
         functionName: EndHearthStone
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 3546b4a3da372914989f2d392a659cc7,
+        objectReferenceParameter: {fileID: 11500000, guid: 2f1c02d0e8df50d49894fad6d86b645f,
           type: 3}
         floatParameter: 0
         intParameter: 0

@@ -35,14 +35,15 @@ public abstract class MOBAUnit : MonoBehaviour
     virtual protected void Start()
     {
         _curHealth = _maxHealth;
-        _status = UnitStatus.IDLE;
+        SetStatus(UnitStatus.IDLE);
         _animator = GetComponent<Animator>();
         enemiesInSight = new HashSet<MOBAUnit>();
     }
 
     public void Update()
     {
-        if (_curHealth < 0) _status = UnitStatus.DEATH;
+        //we force the transition to DEATH, but everything else is defined in subclasses
+        if (_curHealth < 0) SetStatus(UnitStatus.DEATH);
 
         switch (_status)
         {

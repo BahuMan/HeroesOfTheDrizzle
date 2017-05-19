@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 198146511207454522}
   - component: {fileID: 199505877396271412}
   m_Layer: 0
-  m_Name: Healing test
+  m_Name: Self Healing Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

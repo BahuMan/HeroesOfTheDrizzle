@@ -869,10 +869,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9197df9e0b5b5e408015a54ba7819a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  status: 0
-  damage: 0
-  camp: 1
-  maxHealth: 10
+  _status: 0
+  _damage: 0
+  _camp: 1
+  _maxHealth: 15
+  _curHealth: 0
   walkSpeed: 2
   runSpeed: 4
   damagePerAttack: 6

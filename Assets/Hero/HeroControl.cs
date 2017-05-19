@@ -10,7 +10,7 @@ public class HeroControl : MOBAUnit {
     [SerializeField]
     private UntargettedAbility _ability1;
     [SerializeField]
-    private TargettedAbility _ability2;
+    private FireBallAbility _ability2;
 
     [SerializeField]
     private float walkSpeed = 1.5f;
@@ -232,5 +232,22 @@ public class HeroControl : MOBAUnit {
         this._homeBase = homeBase;
         _hearthStone.SetHearthStone(homeBase.SpawnPoint);
         this.SetAlliance(homeBase.getAlliance());
+    }
+
+    //pass on this animation event
+    private void CastHearthStoneSpell()
+    {
+        _hearthStone.CastHearthStoneSpell();
+    }
+
+    //pass on this animation event
+    private void EndHearthStone()
+    {
+        _hearthStone.EndHearthStone();
+    }
+
+    private void ThrowFireBall()
+    {
+        _ability2.ThrowFireBall();
     }
 }

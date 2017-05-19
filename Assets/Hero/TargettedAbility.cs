@@ -42,7 +42,7 @@ public class TargettedAbility: BasicAbility
     override protected void UpdateEffect()
     {
         base.UpdateEffect();
-        if (GetStatus() != SkillStatus.EFFECT) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        if (effect && GetStatus() != SkillStatus.EFFECT) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
 }
