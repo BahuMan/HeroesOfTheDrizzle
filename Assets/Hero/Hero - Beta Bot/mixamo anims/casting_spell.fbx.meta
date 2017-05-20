@@ -187,7 +187,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.40030444
+        functionName: AbilityStartEffect
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2f1c02d0e8df50d49894fad6d86b645f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.79604256
+        functionName: Ability2CastingFinished
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2f1c02d0e8df50d49894fad6d86b645f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

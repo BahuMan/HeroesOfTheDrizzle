@@ -234,20 +234,61 @@ public class HeroControl : MOBAUnit {
         this.SetAlliance(homeBase.getAlliance());
     }
 
-    //pass on this animation event
-    private void CastHearthStoneSpell()
+    /**
+     * these methods can be events in the animation, to help time when the spell or attack is done,
+     * and the effect can take place. This is the moment where the effect appears, the fireball is created, etc.
+     */
+    private void HearthStoneStartEffect()
     {
-        _hearthStone.CastHearthStoneSpell();
+        _hearthStone.AbilityStartEffect();
     }
 
-    //pass on this animation event
-    private void EndHearthStone()
+    /**
+     * these methods can be events in the animation, to help time when the entire spellweaving is finished,
+     * and the hero is no longer preoccupied with the spell. The effect of the spell might still last,
+     * but the hero can change status to whatever is appropriate
+     */
+    private void HearthStoneCastingFinished()
     {
-        _hearthStone.EndHearthStone();
+        _hearthStone.AbilityCastingFinished();
     }
 
-    private void ThrowFireBall()
+    /**
+     * these methods can be events in the animation, to help time when the spell or attack is done,
+     * and the effect can take place. This is the moment where the effect appears, the fireball is created, etc.
+     */
+    private void Ability2StartEffect()
     {
-        _ability2.ThrowFireBall();
+        _ability2.AbilityStartEffect();
     }
+
+    /**
+     * these methods can be events in the animation, to help time when the entire spellweaving is finished,
+     * and the hero is no longer preoccupied with the spell. The effect of the spell might still last,
+     * but the hero can change status to whatever is appropriate
+     */
+    private void Ability2CastingFinished()
+    {
+        _ability2.AbilityCastingFinished();
+    }
+
+    /**
+     * these methods can be events in the animation, to help time when the spell or attack is done,
+     * and the effect can take place. This is the moment where the effect appears, the fireball is created, etc.
+     */
+    private void Ability1StartEffect()
+    {
+        _ability1.AbilityStartEffect();
+    }
+
+    /**
+     * these methods can be events in the animation, to help time when the entire spellweaving is finished,
+     * and the hero is no longer preoccupied with the spell. The effect of the spell might still last,
+     * but the hero can change status to whatever is appropriate
+     */
+    private void Ability1CastingFinished()
+    {
+        _ability1.AbilityCastingFinished();
+    }
+
 }

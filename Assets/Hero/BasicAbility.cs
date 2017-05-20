@@ -9,6 +9,7 @@ public class BasicAbility: MonoBehaviour
     public string AbilityName;
 
     [SerializeField]
+    [Tooltip("How long it takes after activation, before the effect takes place. This parameter is irrelevant if you use event 'Ability2StartEffect' in the animation")]
     protected float CastDuration = 1f;
     [SerializeField]
     protected float EffectDuration = .1f;
@@ -56,20 +57,24 @@ public class BasicAbility: MonoBehaviour
     }
 
     /**
-     * you must call this method from the overriding method for the casting to end after a limited time
+     * you must call this method from the overriding method for the casting to end after a limited time.
+     * Alternatively, your casting animation should contain an event "AbilityStartEffect", to be sent to HeroControl.
+     * The HeroControl will forward the call to AbilityStartEffect() and thus change the status to "EFFECT"
      */
     virtual protected void UpdateCasting()
     {
         if (lastStatusChange + CastDuration < Time.time)
         {
-            Debug.Log(_hero.name + " done casting " + AbilityName);
-            status = SkillStatus.EFFECT;
-            lastStatusChange = Time.time;
+            //instead of just changing the status to EFFECT, I'm calling this virtual method because
+            //subclasses might override the method and do special stuff (like launching a fireball)
+            //WARNING: if your CastDuration is shorter than the cast animation and the animation sends an event "Ability1StartEffect",
+            //the following method is called twice. Make sure your CastDuration lasts long enough
+            this.AbilityStartEffect();
         }
     }
 
     /**
-     * you may call this method from the overriding method to have a timed effect
+     * you may call this method from the overriding method to have the effect expire after a limited time.
      */
     virtual protected void UpdateEffect()
     {
@@ -129,4 +134,25 @@ public class BasicAbility: MonoBehaviour
             return 0;
     }
 
+    /**
+     * this method should be called during the animation frame where the casting of the spell
+     * starts to take effect, typically a dramatic pose in the middle of the casting animation.
+     * The animation can continue, but from now on the ability will be in effect.
+     * This will not automatically change the ability on the hero (the hero is still "preoccupied" with this ability)
+     */
+    virtual public void AbilityStartEffect()
+    {
+        Debug.Log(_hero.name + " done casting " + AbilityName);
+        SetStatus(SkillStatus.EFFECT);
+    }
+
+    /**
+     * this method should be called during the animation frame where the casting of the spell
+     * and all the arm waving has finished. The actual effect may continue, but the hero is no longer
+     * preoccupied with the gestures and can resume business as usual (idle, killing, fighting)
+     */
+    virtual public void AbilityCastingFinished()
+    {
+        _hero.SetStatus(MOBAUnit.UnitStatus.IDLE);
+    }
 }

@@ -30,8 +30,14 @@ public class UntargettedAbility : BasicAbility{
     protected override void UpdateCoolDown()
     {
         base.UpdateCoolDown();
-        //if hero still thinks we're casting, change their status:
-        if (_hero.GetStatus() == MOBAUnit.UnitStatus.ABILITY1) _hero.SetStatus(_previousStatus);
+    }
+
+    public override void AbilityCastingFinished()
+    {
+        //don't just go back to IDLE, but instead go back to previous state:
+        //base.AbilityCastingFinished();
+        _hero.SetStatus(_previousStatus);
+
         if (_effect) _effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 

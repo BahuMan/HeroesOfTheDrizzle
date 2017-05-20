@@ -22,19 +22,20 @@ public class HearthStoneAbility : UntargettedAbility
     /**
      * This function is called from an event in the animation, right when the arms have fully spread
      */
-    public void CastHearthStoneSpell()
+    override public void AbilityStartEffect()
     {
+        //don't call base.AbilityStartEffect(), because we skip status "EFFECT" and go right to COOLDOWN
         Debug.Log("Going Home");
         _hero.transform.position = _hearthStoneLocation.transform.position;
         _hero.transform.rotation = _hearthStoneLocation.transform.rotation;
         this.SetStatus(SkillStatus.COOLDOWN);
     }
 
-    public void EndHearthStone()
+    public override void AbilityCastingFinished()
     {
-        Debug.Log("Gone Home");
-        //previous attack status is probably no longer valid, so just returning to idle:
+        //contrary to "normal" untargetted ability, this time the hero *should* go back to IDLE
         _hero.SetStatus(MOBAUnit.UnitStatus.IDLE);
     }
+
 }
 

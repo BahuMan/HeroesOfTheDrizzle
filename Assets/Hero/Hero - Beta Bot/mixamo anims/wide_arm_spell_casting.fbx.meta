@@ -189,7 +189,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.459854
-        functionName: CastHearthStoneSpell
+        functionName: HearthStoneStartEffect
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 2f1c02d0e8df50d49894fad6d86b645f,
           type: 3}
@@ -197,7 +197,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.82919705
-        functionName: EndHearthStone
+        functionName: HearthStoneCastingFinished
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 2f1c02d0e8df50d49894fad6d86b645f,
           type: 3}

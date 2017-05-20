@@ -29,7 +29,7 @@ public class TargettedAbility: BasicAbility
         return true;
     }
 
-    public void DeActivate()
+    override public void DeActivate()
     {
         //if (status) return;
 

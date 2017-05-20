@@ -30,8 +30,9 @@ public class FireBallAbility: TargettedAbility
      * This method will be called by an event in the animation,
      * so we can time the moment the fireball is created.
      */
-    public void ThrowFireBall()
+    override public void AbilityStartEffect()
     {
+        base.AbilityStartEffect();
         //Vector3 direction = _currentTarget.transform.position - _hero.transform.position;
         //direction.y = 0;
         //direction.Normalize();
