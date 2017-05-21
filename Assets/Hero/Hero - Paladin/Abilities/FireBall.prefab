@@ -558,10 +558,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 15
   ExplosionPrefab: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}
-  Target: {fileID: 0}
   DamageTyp: 1
   DamageAmount: 10
   distanceSQR: 1
+  Target: {fileID: 0}
 --- !u!114 &114435131867867820
 MonoBehaviour:
   m_ObjectHideFlags: 1

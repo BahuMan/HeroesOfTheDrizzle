@@ -9,7 +9,6 @@ using UnityEngine;
  * Requires a trigger collider to detect enemies within its radius.
  */
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(Collider))]
 public abstract class MOBAUnit : MonoBehaviour
 {
 
@@ -30,14 +29,12 @@ public abstract class MOBAUnit : MonoBehaviour
 
     //references
     private Animator _animator;
-    private HashSet<MOBAUnit> enemiesInSight;
 
     virtual protected void Start()
     {
         _curHealth = _maxHealth;
         SetStatus(UnitStatus.IDLE);
         _animator = GetComponent<Animator>();
-        enemiesInSight = new HashSet<MOBAUnit>();
     }
 
     public void Update()
@@ -80,7 +77,6 @@ public abstract class MOBAUnit : MonoBehaviour
         }
 
         _animator.SetInteger("UnitStatus", (int)_status);
-        _animator.SetInteger("NrEnemies", GetNrEnemiesInSight());
     }
 
     abstract protected void UpdateIdle();
@@ -122,9 +118,10 @@ public abstract class MOBAUnit : MonoBehaviour
         return this._camp;
     }
 
-    virtual public void SetAlliance(Alliance newAlliance)
+    virtual public void ChooseSides(Alliance newAlliance)
     {
         this._camp = newAlliance;
+        this.gameObject.BroadcastMessage("SetAlliance", newAlliance, SendMessageOptions.DontRequireReceiver);
     }
 
     public DamageType GetDamageType()
@@ -142,61 +139,9 @@ public abstract class MOBAUnit : MonoBehaviour
         this._status = newstatus;
     }
 
-    public int GetNrEnemiesInSight()
-    {
-        return this.enemiesInSight.Count;
-    }
-
-    public IEnumerable<MOBAUnit> GetEnemiesInSight()
-    {
-        enemiesInSight.RemoveWhere(isNull);
-        return this.enemiesInSight;
-    }
-
     private static bool isNull(MOBAUnit u)
     {
         return u == null;
     }
-
-    protected MOBAUnit ChooseClosestEnemy()
-    {
-        MOBAUnit closestEnemy = null;
-        float closestDistance = float.MaxValue;
-
-        foreach (MOBAUnit enemy in GetEnemiesInSight())
-        {
-            //nullpointer check:
-            //if (!enemy) continue;
-
-            float d = (transform.position - enemy.transform.position).sqrMagnitude;
-            if (d < closestDistance)
-            {
-                closestEnemy = enemy;
-                closestDistance = d;
-            }
-        }
-        return closestEnemy;
-    }
-
-
-    public void OnTriggerEnter(Collider other)
-    {
-        MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
-        if (unit != null && unit.GetAlliance() != this.GetAlliance())
-        {
-            enemiesInSight.Add(unit);
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        Debug.Log(gameObject.name + " lost track of " + other.gameObject.name);
-        MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
-        if (unit != null)
-        {
-            enemiesInSight.Remove(unit);
-        }
-    }
-
 }
 

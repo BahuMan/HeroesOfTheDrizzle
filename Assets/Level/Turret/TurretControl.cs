@@ -23,19 +23,21 @@ public class TurretControl : MOBAUnit {
 
     private float lastAttackTime;
     private MOBAUnit _targetEnemy;
+    private EnemyTracker _enemyTracker;
 
     override protected void Start () {
         base.Start();
         _beam.SetActive(false);
         _laser = GetComponent<LineRenderer>();
         _laser.SetPosition(0, this.transform.position +  _laserOffset*2);
+        _enemyTracker = GetComponentInChildren<EnemyTracker>();
 	}
 
     override protected void UpdateIdle()
     {
-        if (GetNrEnemiesInSight() > 0)
+        if (_enemyTracker.GetNrEnemiesInSight() > 0)
         {
-            _targetEnemy = ChooseClosestEnemy();
+            _targetEnemy = _enemyTracker.ChooseClosestEnemy();
             _beam.SetActive(true);
             _beam.transform.position = this.transform.position;
             SetStatus(UnitStatus.ATTACKING);
@@ -44,7 +46,7 @@ public class TurretControl : MOBAUnit {
 
     override protected void UpdateAttacking()
     {
-        if (GetNrEnemiesInSight() == 0 || _targetEnemy == null)
+        if (_enemyTracker.GetNrEnemiesInSight() == 0 || _targetEnemy == null)
         {
             //@TODO: perhaps animate the "return" of the search beam?
             _beam.SetActive(false);

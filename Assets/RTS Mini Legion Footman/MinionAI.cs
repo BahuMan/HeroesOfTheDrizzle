@@ -6,6 +6,7 @@ public class MinionAI : MOBAUnit {
     //FIELDS
     //References
     private CharacterController _charCtrl;
+    private EnemyTracker _enemyTracker;
 
     //editor fields
     [SerializeField]
@@ -28,6 +29,7 @@ public class MinionAI : MOBAUnit {
 
     override protected void Start () {
         base.Start();
+        _enemyTracker = GetComponentInChildren<EnemyTracker>();
         Debug.Log("MinionAI.Start");
 	}
 
@@ -49,7 +51,7 @@ public class MinionAI : MOBAUnit {
     override protected void UpdateAttacking()
     {
 
-        if (GetNrEnemiesInSight() == 0)
+        if (_enemyTracker.GetNrEnemiesInSight() == 0)
         {
             SetStatus(UnitStatus.IDLE);
             return;
@@ -57,7 +59,7 @@ public class MinionAI : MOBAUnit {
 
         if (_targetEnemy == null)
         {
-            _targetEnemy = ChooseClosestEnemy();
+            _targetEnemy = _enemyTracker.ChooseClosestEnemy();
             _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
         }
 
@@ -77,7 +79,7 @@ public class MinionAI : MOBAUnit {
     override protected void UpdateAttackRunning()
     {
 
-        if (GetNrEnemiesInSight() == 0)
+        if (_enemyTracker.GetNrEnemiesInSight() == 0)
         {
             SetStatus(UnitStatus.IDLE);
             return;
@@ -85,7 +87,7 @@ public class MinionAI : MOBAUnit {
 
         if (_targetEnemy == null)
         {
-            _targetEnemy = ChooseClosestEnemy();
+            _targetEnemy = _enemyTracker.ChooseClosestEnemy();
             _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
         }
 
@@ -116,7 +118,7 @@ public class MinionAI : MOBAUnit {
 
     private void CommonUpdate()
     {
-        if (GetNrEnemiesInSight() > 0)
+        if (_enemyTracker.GetNrEnemiesInSight() > 0)
         {
             SetStatus(UnitStatus.ATTACKING);
         }

@@ -48,7 +48,8 @@ MILESTONE 2
   TODO: make turret attack visible
   TODO: win/loss condition when base is destroyed
 ==================
-
+Sat 20/5 (5 hrs): refactor hero & ability status update, start upgradeable abilities
+Sun 21/5 (3 hrs): upgradeable abilities
 
     public enum UnitStatus { IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, HEARTHSTONE, ABILITY1, ABILITY2, DEATH }
     public enum DamageType { MELEE, FIRE, PIERCE, MAGIC, CRUSH }

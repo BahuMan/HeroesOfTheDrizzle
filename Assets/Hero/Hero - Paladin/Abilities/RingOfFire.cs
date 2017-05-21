@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyTracker))]
 public class RingOfFire : UntargettedAbility {
 
     [SerializeField]
     private float _damage = 1f;
     [SerializeField]
     private float _timeBetweenDamage = 1f;
-    [SerializeField]
-    private float _sqrDistance = 4f;
 
+    private EnemyTracker _enemyTracker;
     private ParticleSystem[] _fireSystems;
     private float _lastDamageTime = 0f;
 
@@ -17,6 +17,7 @@ public class RingOfFire : UntargettedAbility {
     {
         base.Start();
         _fireSystems = GetComponentsInChildren<ParticleSystem>();
+        _enemyTracker = GetComponentInChildren<EnemyTracker>();
     }
 
     public override bool Activate()
@@ -61,10 +62,9 @@ public class RingOfFire : UntargettedAbility {
     private void burn()
     {
         MOBAUnit.Alliance ourSide = _hero.GetAlliance();
-        foreach (MOBAUnit unit in _hero.GetEnemiesInSight())
+        foreach (MOBAUnit unit in _enemyTracker.GetEnemiesInSight())
         {
-            //if enemy and close enough ...
-            if (unit.GetAlliance() != ourSide && (_hero.transform.position - unit.transform.position).sqrMagnitude < _sqrDistance)
+            if (unit.GetAlliance() != ourSide)
             {
                 Debug.Log(_hero.name + " dealing fire damage to " + unit.name);
                 unit.ReceiveDamage(MOBAUnit.DamageType.FIRE, _damage);

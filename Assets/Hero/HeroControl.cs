@@ -234,7 +234,7 @@ public class HeroControl : MOBAUnit {
     {
         this._homeBase = homeBase;
         _hearthStone.SetHearthStone(homeBase.SpawnPoint);
-        this.SetAlliance(homeBase.getAlliance());
+        this.ChooseSides(homeBase.getAlliance());
     }
 
     /**
