@@ -10,7 +10,7 @@ public class HeroControl : MOBAUnit {
     [SerializeField]
     private UntargettedAbility _ability1;
     [SerializeField]
-    private FireBallAbility _ability2;
+    private TargettedAbility _ability2;
 
     [SerializeField]
     private float walkSpeed = 1.5f;
@@ -23,6 +23,10 @@ public class HeroControl : MOBAUnit {
 
     [SerializeField]
     private float _maxMana;
+    [SerializeField]
+    private int _points;
+    [SerializeField]
+    private HeroUpgrade[] _upgrades;
 
     //privates
     private float _curMana;
@@ -32,10 +36,10 @@ public class HeroControl : MOBAUnit {
     private float _attackedLastTime;
     private BaseControl _homeBase;
 
-	// Use this for initialization
 	override protected void Start () {
         base.Start();
         _curMana = 0;
+        _points = 0;
         _attackedLastTime = 0;
 
 	}
@@ -144,7 +148,6 @@ public class HeroControl : MOBAUnit {
         if (distSqr < closeEnoughForMove)
         {
             SetStatus(UnitStatus.IDLE);
-            Debug.Log("I've reached my destination");
         }
         else
         {
@@ -232,6 +235,56 @@ public class HeroControl : MOBAUnit {
         this._homeBase = homeBase;
         _hearthStone.SetHearthStone(homeBase.SpawnPoint);
         this.SetAlliance(homeBase.getAlliance());
+    }
+
+    /**
+     * Called by the GUI, in case the player needs to choose an upgraded skill.
+     * If this function returns a non-empty array, the choices will be presented to the player
+     */
+    public HeroUpgradeChoice[] GetUpgradeChoices()
+    {
+        if (_upgrades == null || _upgrades.Length == 0 || _upgrades[0].pointsRequired > _points) return null;
+        else return _upgrades[0].options;
+    }
+
+    /**
+     * When the player has made a choice out of the options returned in the above function GetUpgradeChoices(),
+     * this set of upgrade choices is removed and the following set of options will be presented,
+     * but only if the hero has gained enough points to qualify for the next upgrade
+     */
+    public void ChooseHeroUpgrade(int chosen)
+    {
+        Debug.Log("Hero upgrade chosen: " + _upgrades[0].options[chosen].Option);
+        UpgradeToAbility(_upgrades[0].options[chosen].AbilityPrefab);
+        //@TODO: remove the first item in the upgrades array, because that choice has now been made already
+    }
+
+    private void UpgradeToAbility(BasicAbility AbilityPrefab)
+    {
+        if (AbilityPrefab is TargettedAbility)
+        {
+            UpgradeTargettedAbility((TargettedAbility) AbilityPrefab);
+        }
+        else if (AbilityPrefab is UntargettedAbility)
+        {
+            UpgradeUntargettedAbility((UntargettedAbility) AbilityPrefab);
+        }
+        else
+        {
+            Debug.LogError("Not sure how to upgrade " + gameObject.name + " to ability " + AbilityPrefab.name);
+        }
+    }
+
+    private void UpgradeTargettedAbility(TargettedAbility AbilityPrefab)
+    {
+        Destroy(this._ability2.gameObject);
+        this._ability2 = Instantiate<TargettedAbility>(AbilityPrefab, this.transform);
+    }
+
+    private void UpgradeUntargettedAbility(UntargettedAbility AbilityPrefab)
+    {
+        Destroy(this._ability1.gameObject);
+        this._ability1 = Instantiate<UntargettedAbility>(AbilityPrefab, this.transform);
     }
 
     /**

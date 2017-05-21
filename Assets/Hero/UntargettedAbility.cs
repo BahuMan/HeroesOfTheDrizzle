@@ -16,7 +16,6 @@ public class UntargettedAbility : BasicAbility{
         }
 
         Debug.Log(_hero.name + " activated " + AbilityName);
-        if (_effect) _effect.Play();
         _previousStatus = _hero.GetStatus();
         SetStatus(SkillStatus.CASTING);
         return true;
@@ -30,6 +29,12 @@ public class UntargettedAbility : BasicAbility{
     protected override void UpdateCoolDown()
     {
         base.UpdateCoolDown();
+    }
+
+    public override void AbilityStartEffect()
+    {
+        base.AbilityStartEffect();
+        if (_effect) _effect.Play();
     }
 
     public override void AbilityCastingFinished()

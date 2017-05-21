@@ -28,8 +28,9 @@ public class HeroGUI : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        _levelDropdown.gameObject.SetActive(false);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
         _HealthSlider.value = _localHero.GetCurrentHealth();
@@ -75,6 +76,7 @@ public class HeroGUI : MonoBehaviour {
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit info;
+
             if (Physics.Raycast(ray, out info, 100f, currentMask))
             {
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
@@ -97,6 +99,8 @@ public class HeroGUI : MonoBehaviour {
 
     private void UpdateNormal()
     {
+        /* disabling left mouse click reaction, so I can use the GUI without strange effects in the game:
+
         if (Input.GetButtonDown("Fire1"))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -110,10 +114,12 @@ public class HeroGUI : MonoBehaviour {
                 }
                 else
                 {
+                    Debug.Log("Ordering attack on " + t.name);
                     _localHero.Attack(t);
                 }
             }
         }
+        */
 
         if (Input.GetButtonDown("Fire2"))
         {
@@ -125,6 +131,8 @@ public class HeroGUI : MonoBehaviour {
                 _localHero.MoveTo(info.point);
             }
         }
+
+        CheckUpgradeChoices();
 
     }
 
@@ -147,9 +155,45 @@ public class HeroGUI : MonoBehaviour {
         _localHero.ActivateAbility1();
     }
 
-    public void SetLevelUpOptions(List<string> options)
+    public void ClickedAbility2()
     {
-        _levelDropdown.ClearOptions();
-        _levelDropdown.AddOptions(options);
+        SelectTargetForAbility2();
+    }
+
+    /**
+     * This method will check the hero for a possible level-up.
+     * If a choice is available, it will be presented to the player in the GUI.
+     * By doing the polling from the HeroGUI class, none of the level-up mechanics
+     * will be active for non-local players (e.g. when networking)
+     */
+    public void CheckUpgradeChoices()
+    {
+        //if a previous choice is still active, don't check for new choices:
+        if (_levelDropdown.IsActive()) return;
+
+        HeroUpgradeChoice[] choices = _localHero.GetUpgradeChoices();
+        if (choices != null && choices.Length > 0)
+        {
+            //if a choice was offered by the hero, let's display it in the GUI:
+            _levelDropdown.gameObject.SetActive(true);
+            _levelDropdown.ClearOptions();
+            //convert the list of options to something the GUI dropdown can read:
+            List<string> opts = new List<string>(choices.Length+1);
+            opts.Add("Choose Hero Upgrade");
+            for (int c = 0; c < choices.Length; c++) opts.Add(choices[c].Option);
+            _levelDropdown.AddOptions(opts);
+        }
+    }
+
+    public void UpgradeChosen()
+    {
+        int c = _levelDropdown.value;
+        Debug.Log("option chosen: " + c);
+        if (c > 0)
+        {
+            //first line in the dropdown is "choose upgrade", so I need to subtract that line from the choice:
+            _localHero.ChooseHeroUpgrade(c-1);
+            _levelDropdown.gameObject.SetActive(false);
+        }
     }
 }
