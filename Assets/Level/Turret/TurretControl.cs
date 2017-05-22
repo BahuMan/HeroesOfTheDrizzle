@@ -30,6 +30,7 @@ public class TurretControl : MOBAUnit {
         _beam.SetActive(false);
         _laser = GetComponent<LineRenderer>();
         _laser.SetPosition(0, this.transform.position +  _laserOffset*2);
+        _laser.enabled = false;
         _enemyTracker = GetComponentInChildren<EnemyTracker>();
 	}
 
@@ -65,7 +66,7 @@ public class TurretControl : MOBAUnit {
             _laser.SetPosition(1, _targetEnemy.transform.position + _laserOffset);
             _targetEnemy.ReceiveDamage(GetDamageType(), this.damagePerAttack);
             lastAttackTime = Time.time;
-            //StartCoroutine(DeactivateLaser());
+            StartCoroutine(DeactivateLaser());
         }
     }
 

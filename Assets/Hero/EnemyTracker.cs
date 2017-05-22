@@ -14,6 +14,7 @@ public class EnemyTracker : MonoBehaviour {
     }
     public int GetNrEnemiesInSight()
     {
+        _enemiesInSight.RemoveWhere(isNull);
         return this._enemiesInSight.Count;
     }
 

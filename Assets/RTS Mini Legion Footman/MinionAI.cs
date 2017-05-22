@@ -60,7 +60,7 @@ public class MinionAI : MOBAUnit {
         if (_targetEnemy == null)
         {
             _targetEnemy = _enemyTracker.ChooseClosestEnemy();
-            _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
+            //_targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
         }
 
         _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);

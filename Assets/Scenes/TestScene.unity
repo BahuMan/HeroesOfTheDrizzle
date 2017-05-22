@@ -1709,7 +1709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &499914486
 Transform:
   m_ObjectHideFlags: 0
@@ -1742,7 +1742,7 @@ MonoBehaviour:
   - WayPoints:
     - {fileID: 273811284}
     - {fileID: 1687072298}
-  minionPrefab: {fileID: 114078614721809862, guid: 9400ead19fd672546b8c5857a0f82c72,
+  minionPrefab: {fileID: 114519201338078134, guid: de58b849a089a3549bccb64314df97c0,
     type: 2}
   nrMinionsToLaunch: 2
   IntervalBetweenLaunches: 30
@@ -2722,6 +2722,9 @@ MonoBehaviour:
   _levelDropdown: {fileID: 2043152767}
   _HealthSlider: {fileID: 1396164197}
   _ManaSlider: {fileID: 1414442723}
+  HearthStoneButton: {fileID: 334082436}
+  Ability1Button: {fileID: 358820278}
+  Ability2Button: {fileID: 1461113435}
 --- !u!1 &758225420
 GameObject:
   m_ObjectHideFlags: 0
@@ -3498,7 +3501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1024667342
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -50,6 +50,7 @@ MILESTONE 2
 ==================
 Sat 20/5 (5 hrs): refactor hero & ability status update, start upgradeable abilities
 Sun 21/5 (3+3 hrs): upgradeable abilities + fix bug where left-click forces hero to attack
+Mon 22/5 (1 hrs): ability buttons indicate cooldown
 
 
     public enum UnitStatus { IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, HEARTHSTONE, ABILITY1, ABILITY2, DEATH }

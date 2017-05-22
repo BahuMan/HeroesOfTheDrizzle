@@ -34,6 +34,7 @@ public class BaseControl : MonoBehaviour {
                     MinionAI minion = Instantiate<MinionAI>(minionPrefab, SpawnPoint.position, SpawnPoint.rotation);
                     Debug.Log(gameObject.name + " spawning minion " + minion.name);
                     minion.setWaypoints(l.WayPoints);
+                    minion.ChooseSides(this.camp);
                     yield return new WaitForSeconds(IntervalBetweenMinions);
                 }
             }

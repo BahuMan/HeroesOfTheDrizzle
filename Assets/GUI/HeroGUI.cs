@@ -220,7 +220,7 @@ void Update () {
     //update the timer value for each of the ability buttons and update their looks accordingly
     private void CheckCoolDownButtons()
     {
-        IndicateButton((Time.time - Mathf.Round(Time.time)), HearthStoneButton, HearthStoneButtonImg);
+        IndicateButton(_localHero.GetHearthStoneCoolDown(), HearthStoneButton, HearthStoneButtonImg);
         IndicateButton(_localHero.GetAbility1CoolDown(), Ability1Button, Ability1ButtonImg);
         IndicateButton(_localHero.GetAbility2CoolDown(), Ability2Button, Ability2ButtonImg);
     }
