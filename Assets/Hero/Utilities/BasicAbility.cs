@@ -9,11 +9,13 @@ public class BasicAbility: MonoBehaviour
     public string AbilityName;
 
     [SerializeField]
-    [Tooltip("How long it takes after activation, before the effect takes place. This parameter is irrelevant if you use event 'Ability2StartEffect' in the animation")]
+    [Tooltip("How long it takes after activation, before the effect takes place. If you use event 'Ability2StartEffect' in the animation, you should set this high enough to become irrelevant")]
     protected float CastDuration = 1f;
     [SerializeField]
+    [Tooltip("if your UpdateEffect() also calls base.UpdateEffect, the ability will automatically stop after this time")]
     protected float EffectDuration = .1f;
     [SerializeField]
+    [Tooltip("How long you have to wait until you can cast this ability again. This is the countdown you see on the buttons")]
     protected float CoolDownTime = 5f;
 
     protected HeroControl _hero;
@@ -80,7 +82,7 @@ public class BasicAbility: MonoBehaviour
     {
         if (lastStatusChange + EffectDuration < Time.time)
         {
-            Debug.Log(_hero.name + " finished " + AbilityName);
+            //Debug.Log(_hero.name + " finishing " + AbilityName);
             DeActivate();
         }
     }
@@ -88,7 +90,7 @@ public class BasicAbility: MonoBehaviour
     virtual public void DeActivate()
     {
         SetStatus(SkillStatus.COOLDOWN);
-        Debug.Log(_hero.name + " deactivated " + AbilityName);
+        //Debug.Log(_hero.name + " deactivated " + AbilityName);
     }
 
 
@@ -99,7 +101,7 @@ public class BasicAbility: MonoBehaviour
     {
         if (lastStatusChange + CoolDownTime < Time.time)
         {
-            Debug.Log(_hero.name + " ready to cast " + AbilityName);
+            //Debug.Log(_hero.name + " ready to cast " + AbilityName);
             status = SkillStatus.READY;
             lastStatusChange = Time.time;
         }
@@ -128,10 +130,14 @@ public class BasicAbility: MonoBehaviour
 
     public float GetCurrentCoolDownTime()
     {
-        if (status == SkillStatus.COOLDOWN)
-            return (this.lastStatusChange + this.CoolDownTime) - Time.time;
-        else
-            return 0;
+        switch (status)
+        {
+            case SkillStatus.CASTING: return (this.lastStatusChange + this.CastDuration + this.EffectDuration + this.CoolDownTime) - Time.time;
+            case SkillStatus.EFFECT: return (this.lastStatusChange + this.EffectDuration + this.CoolDownTime) - Time.time;
+            case SkillStatus.COOLDOWN: return (this.lastStatusChange + this.CoolDownTime) - Time.time;
+            default:
+                return 0;
+        }
     }
 
     /**
@@ -142,7 +148,7 @@ public class BasicAbility: MonoBehaviour
      */
     virtual public void AbilityStartEffect()
     {
-        Debug.Log(_hero.name + " done casting " + AbilityName);
+        Debug.Log(_hero.name + " start effect " + AbilityName);
         SetStatus(SkillStatus.EFFECT);
     }
 

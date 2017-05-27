@@ -4,6 +4,9 @@ public class HeroControl : MOBAUnit {
 
     //FIELDS
 
+    public delegate void HeroDiedEventHandler(HeroControl dyingHero);
+    public event HeroDiedEventHandler HeroDied;
+
     //references to abilities
     [SerializeField]
     private HearthStoneAbility _hearthStone;
@@ -112,11 +115,11 @@ public class HeroControl : MOBAUnit {
     /**
      * This public method is used buy the GUI, the AI or the network to make the hero do something
      */
-    public void ActivateAbility2(GameObject target)
+    public void ActivateAbility2(GameObject target, Vector3 point)
     {
         //first check legal status? Ability will check correct timing
         Rotate2DTo(target.transform.position);
-        if (_ability2.Activate(target))
+        if (_ability2.Activate(target, point))
         {
             //hero status should be changed by ability
             SetStatus(UnitStatus.ABILITY2);
@@ -217,6 +220,10 @@ public class HeroControl : MOBAUnit {
 
     protected void DeathAnimationDone()
     {
+        if (HeroDied != null)
+        {
+            HeroDied(this);
+        }
         Destroy(this.gameObject, 5f);
     }
 
@@ -234,7 +241,17 @@ public class HeroControl : MOBAUnit {
     {
         this._homeBase = homeBase;
         _hearthStone.SetHearthStone(homeBase.SpawnPoint);
-        this.ChooseSides(homeBase.getAlliance());
+        this.ChooseSides(homeBase.GetAlliance());
+    }
+
+    public int GetPoints()
+    {
+        return _points;
+    }
+
+    public void AwardPoints(int extra)
+    {
+        _points += extra;
     }
 
     /**

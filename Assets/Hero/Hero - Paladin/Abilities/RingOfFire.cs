@@ -19,17 +19,10 @@ public class RingOfFire : UntargettedAbility {
         _fireSystems = GetComponentsInChildren<ParticleSystem>();
         _enemyTracker = GetComponentInChildren<EnemyTracker>();
     }
-
-    public override bool Activate()
+    override public void AbilityStartEffect()
     {
-        if (base.Activate())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        base.AbilityStartEffect();
+        VisualizeFire(true);
     }
 
     public override void DeActivate()

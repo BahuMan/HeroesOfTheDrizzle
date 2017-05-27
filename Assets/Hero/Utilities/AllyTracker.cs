@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class AllyTracker : MonoBehaviour {
 
+    [SerializeField]
     private MOBAUnit.Alliance _alliance;
     private HashSet<MOBAUnit> _alliesInSight;
 

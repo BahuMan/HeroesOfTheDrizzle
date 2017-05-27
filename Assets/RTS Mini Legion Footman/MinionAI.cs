@@ -17,6 +17,7 @@ public class MinionAI : MOBAUnit {
     private float damagePerAttack;
 
     //private fields
+    [SerializeField]
     private Transform[] _waypoints;
     private int curWaypoint = -1;
 
@@ -25,12 +26,14 @@ public class MinionAI : MOBAUnit {
     private float _targetEnemyDistance;
 
     private const float CloseEnoughToWaypoint = 0.4f;
-    private const float CloseEnoughToAttack = 1f;
+    private const float CloseEnoughToAttack = 2f;
 
     override protected void Start () {
         base.Start();
+        _charCtrl = GetComponent<CharacterController>();
         _enemyTracker = GetComponentInChildren<EnemyTracker>();
-        Debug.Log("MinionAI.Start");
+        //Debug.Log("MinionAI.Start");
+        if (_waypoints != null && _waypoints.Length > 0) curWaypoint = 0;
 	}
 
     override protected void UpdateIdle()
@@ -71,8 +74,9 @@ public class MinionAI : MOBAUnit {
         }
         else
         {
-            //do nothing; attack method will be called by animation when sword is thrust forward
-            //MeleeAttack();
+            SetStatus(UnitStatus.ATTACKING);
+            //actual damage will be dealt at appropriate frame in the attack animation
+            //(with callback to MeleeAttack())
         }
     }
 
@@ -97,7 +101,8 @@ public class MinionAI : MOBAUnit {
         {
             GetAnimatorComponent().SetFloat("Speed", 2.0f);
             Rotate2DTo(_targetEnemy.transform);
-            transform.position += transform.forward * Time.deltaTime * runSpeed;
+            //transform.position += transform.forward * Time.deltaTime * runSpeed;
+            _charCtrl.Move(transform.forward * Time.deltaTime * runSpeed);
         }
         else
         {
@@ -168,12 +173,14 @@ public class MinionAI : MOBAUnit {
             //Quaternion targetRotation = Quaternion.LookRotation(direction);
             //_charCtrl.transform.rotation = Quaternion.Slerp(_charCtrl.transform.rotation, targetRotation, rotationSpeed);
             transform.rotation = Quaternion.LookRotation(direction);
-            transform.position += direction * walkSpeed * Time.deltaTime;
-            GetAnimatorComponent().SetFloat("Speed", 1f);
+            _charCtrl.Move(direction * walkSpeed * Time.deltaTime);
+            //transform.position += direction * walkSpeed * Time.deltaTime;
+            GetAnimatorComponent().SetFloat("Speed", walkSpeed);
         }
         else
         {
             //no more waypoints, and apparently no enemies to attack -> idle
+            SetStatus(UnitStatus.IDLE);
             GetAnimatorComponent().SetFloat("Speed", 0f);
         }
     }

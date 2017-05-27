@@ -7,6 +7,7 @@ public class FireAndForget : MonoBehaviour {
     public float Speed;
     public GameObject ExplosionPrefab;
     public MOBAUnit.DamageType DamageTyp;
+    public HeroControl LaunchedBy;
     public float DamageAmount;
     public float distanceSQR = 2f;
 
@@ -35,6 +36,7 @@ public class FireAndForget : MonoBehaviour {
 
     private void SelfDestruct()
     {
+        LaunchedBy.AwardPoints((int) this.DamageAmount);
         Target.ReceiveDamage(this.DamageTyp, this.DamageAmount);
         Destroy(this.gameObject);
         Destroy(Instantiate(this.ExplosionPrefab, transform.position, Quaternion.identity), 5);

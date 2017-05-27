@@ -61,7 +61,7 @@ public class TurretControl : MOBAUnit {
 
         if (lastAttackTime + timeBetweenAttacks < Time.time)
         {
-            Debug.Log(gameObject.name + " firing at " + _targetEnemy.name);
+            //Debug.Log(gameObject.name + " firing at " + _targetEnemy.name);
             _laser.enabled = true;
             _laser.SetPosition(1, _targetEnemy.transform.position + _laserOffset);
             _targetEnemy.ReceiveDamage(GetDamageType(), this.damagePerAttack);
@@ -85,7 +85,7 @@ public class TurretControl : MOBAUnit {
 
     override protected void UpdateDeath()
     {
-        Debug.Log(gameObject.name + " was destroyed");
+        //Debug.Log(gameObject.name + " was destroyed");
         Destroy(this.gameObject);
     }
 

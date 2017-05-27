@@ -50,7 +50,7 @@ public class HeroGUI : MonoBehaviour {
 // Update is called once per frame
 void Update () {
         _HealthSlider.value = _localHero.GetCurrentHealth();
-        HealthFillColor.r = (_localHero.GetMaxHealth() - _localHero.GetCurrentHealth() / _localHero.GetMaxHealth());
+        HealthFillColor.r = (_localHero.GetMaxHealth() - _localHero.GetCurrentHealth()) / _localHero.GetMaxHealth();
         HealthFillColor.g = _localHero.GetCurrentHealth() / _localHero.GetMaxHealth();
         HealthFillImg.color = HealthFillColor;
         _ManaSlider.value = _localHero.GetCurrentMana();
@@ -102,7 +102,7 @@ void Update () {
             {
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 //this.marker.transform.position = info.point;
-                _localHero.ActivateAbility2(info.collider.gameObject);
+                _localHero.ActivateAbility2(info.collider.gameObject, info.point);
                 this.status = GUIStatus.NORMAL;
             }
             else

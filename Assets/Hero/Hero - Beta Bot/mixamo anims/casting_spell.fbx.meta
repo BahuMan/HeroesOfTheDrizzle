@@ -180,7 +180,7 @@ ModelImporter:
       loopBlendOrientation: 1
       loopBlendPositionY: 0
       loopBlendPositionXZ: 1
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -189,7 +189,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.40030444
-        functionName: AbilityStartEffect
+        functionName: Ability2StartEffect
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 2f1c02d0e8df50d49894fad6d86b645f,
           type: 3}

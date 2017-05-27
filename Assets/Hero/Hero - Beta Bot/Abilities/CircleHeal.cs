@@ -31,6 +31,7 @@ public class CircleHeal : UntargettedAbility
         {
             if (unit.GetCurrentHealth() < unit.GetMaxHealth())
             {
+                _hero.AwardPoints((int) _healAmount);
                 unit.ReceiveDamage(MOBAUnit.DamageType.MAGIC, -_healAmount);
             }
         }

@@ -6,11 +6,14 @@ public class FireBallAbility: TargettedAbility
     private FireAndForget _fireBallPrefab;
     [SerializeField]
     private Vector3 _fireBallOffset = Vector3.up * 2;
+    [SerializeField]
+    private float _timeBetweenFireballs = .2f;
 
     //private FireAndForget _currentFireBall;
     private MOBAUnit _currentTarget;
+    private float _lastFireballTime = 0;
 
-    public override bool Activate(GameObject target)
+    public override bool Activate(GameObject target, Vector3 point)
     {
         _currentTarget = target.GetComponent<MOBAUnit>(); //keep track of target, because we may need to guide fireball
         if (_currentTarget == null)
@@ -18,11 +21,15 @@ public class FireBallAbility: TargettedAbility
             Debug.LogError("selected target " + target.name + " is not a MOBAUnit for FireBall");
             return false;
         }
-        else if (base.Activate(target))
+        else if (_currentTarget.GetAlliance() == _hero.GetAlliance())
         {
-            return true;
+            Debug.Log("Don't shoot your allies!");
+            return false;
         }
-        else return false;
+        else
+        {
+            return base.Activate(target, point);
+        }
     }
 
 
@@ -33,12 +40,25 @@ public class FireBallAbility: TargettedAbility
     override public void AbilityStartEffect()
     {
         base.AbilityStartEffect();
-        //Vector3 direction = _currentTarget.transform.position - _hero.transform.position;
-        //direction.y = 0;
-        //direction.Normalize();
-        //Quaternion rot = Quaternion.LookRotation(direction);
-        FireAndForget missle = Instantiate<FireAndForget>(_fireBallPrefab, _hero.transform.position + _fireBallOffset, Quaternion.identity);
-        missle.Target = _currentTarget;
+        Fire();
     }
+
+    protected override void UpdateEffect()
+    {
+        base.UpdateEffect();
+        if (_lastFireballTime + _timeBetweenFireballs < Time.time)
+        {
+            Fire();
+        }
+    }
+
+    private void Fire()
+    {
+        FireAndForget missle = Instantiate<FireAndForget>(_fireBallPrefab, _hero.transform.position + _fireBallOffset, Quaternion.identity);
+        missle.LaunchedBy = _hero;
+        missle.Target = _currentTarget;
+        _lastFireballTime = Time.time;
+    }
+
 }
 

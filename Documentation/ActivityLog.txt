@@ -43,14 +43,22 @@ MILESTONE 2
   red and blue bases spawn minions, minions attack each other and then resume walk to waypoints
   turret (current model: statue of a hooded & robed figure on a socket) is neutral and attacks blue AND red
   TODO: clipping for minions (they should bump into each other)
-  TODO: offer hero level-up choice in GUI
+  DONE: offer hero level-up choice in GUI
   TODO: AI for hero
-  TODO: make turret attack visible
-  TODO: win/loss condition when base is destroyed
+  DONE: make turret attack visible
+  DONE: win/loss condition when base is destroyed
+  DONE: when hero dies, respawn with 0 points and basic abilities
 ==================
 Sat 20/5 (5 hrs): refactor hero & ability status update, start upgradeable abilities
 Sun 21/5 (3+3 hrs): upgradeable abilities + fix bug where left-click forces hero to attack
 Mon 22/5 (1 hrs): ability buttons indicate cooldown
+Fri 26/5 (7 hrs): add start menu, hero respawn, + targetted heal ability
+  TODO: download extra animation for beta bot ability1
+Sat 27/5 (3+3 hrs): finished upgrade path for 2 heroes + top level indicator
+
+
+
+
 
 
     public enum UnitStatus { IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, HEARTHSTONE, ABILITY1, ABILITY2, DEATH }

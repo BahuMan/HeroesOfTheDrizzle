@@ -17,6 +17,7 @@ public class SelfHeal : UntargettedAbility
         {
             if (_hero.GetCurrentHealth() < _hero.GetMaxHealth())
             {
+                _hero.AwardPoints((int)_healAmount);
                 _hero.ReceiveDamage(MOBAUnit.DamageType.MAGIC, -_healAmount);
             }
             _lastHealTime = Time.time;

@@ -4,28 +4,24 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class EnemyTracker : MonoBehaviour {
 
-
+    [SerializeField]
     private MOBAUnit.Alliance _alliance;
-    private HashSet<MOBAUnit> _enemiesInSight;
+    private HashSet<MOBAUnit> _enemiesInSight = new HashSet<MOBAUnit>();
 
-    private void Start()
-    {
-        _enemiesInSight = new HashSet<MOBAUnit>();
-    }
     public int GetNrEnemiesInSight()
     {
-        _enemiesInSight.RemoveWhere(isNull);
+        _enemiesInSight.RemoveWhere(isNullOrDead);
         return this._enemiesInSight.Count;
     }
 
     public IEnumerable<MOBAUnit> GetEnemiesInSight()
     {
-        _enemiesInSight.RemoveWhere(isNull);
+        _enemiesInSight.RemoveWhere(isNullOrDead);
         return this._enemiesInSight;
     }
-    private static bool isNull(MOBAUnit u)
+    private static bool isNullOrDead(MOBAUnit u)
     {
-        return u == null;
+        return (u == null || u.GetStatus() == MOBAUnit.UnitStatus.DEATH);
     }
 
     public MOBAUnit ChooseClosestEnemy()
@@ -69,7 +65,7 @@ public class EnemyTracker : MonoBehaviour {
 
     public void OnTriggerExit(Collider other)
     {
-        Debug.Log(gameObject.name + " lost track of " + other.gameObject.name);
+        //Debug.Log(gameObject.name + " lost track of " + other.gameObject.name);
         MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
         if (unit != null)
         {
