@@ -86,6 +86,8 @@ public class TurretControl : MOBAUnit {
     override protected void UpdateDeath()
     {
         //Debug.Log(gameObject.name + " was destroyed");
+        this._laser.enabled = false;
+        this._beam.SetActive(false);
         Destroy(this.gameObject);
     }
 

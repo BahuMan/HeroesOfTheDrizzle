@@ -25,8 +25,12 @@ public class MinionAI : MOBAUnit {
     private MOBAUnit _targetEnemy;
     private float _targetEnemyDistance;
 
-    private const float CloseEnoughToWaypoint = 0.4f;
-    private const float CloseEnoughToAttack = 2f;
+    //(square) distances at which we consider the goal "reached":
+    private const float CloseEnoughToWaypoint = 0.2f;
+    private const float CloseEnoughToAttack = 4f;
+
+    //fall accelleration:
+    private Vector3 curFallSpeed = Vector3.zero;
 
     override protected void Start () {
         base.Start();
@@ -169,11 +173,20 @@ public class MinionAI : MOBAUnit {
         {
             Vector3 direction = _waypoints[curWaypoint].position - transform.position;
             direction.y = 0f;
-            direction.Normalize();
+            direction = direction.normalized * walkSpeed;
             //Quaternion targetRotation = Quaternion.LookRotation(direction);
             //_charCtrl.transform.rotation = Quaternion.Slerp(_charCtrl.transform.rotation, targetRotation, rotationSpeed);
             transform.rotation = Quaternion.LookRotation(direction);
-            _charCtrl.Move(direction * walkSpeed * Time.deltaTime);
+            if (_charCtrl.isGrounded)
+            {
+                curFallSpeed = Vector3.zero;
+            }
+            else
+            {
+                curFallSpeed += Physics.gravity * Time.deltaTime;
+                direction += curFallSpeed;
+            }
+            _charCtrl.Move(direction  * Time.deltaTime);
             //transform.position += direction * walkSpeed * Time.deltaTime;
             GetAnimatorComponent().SetFloat("Speed", walkSpeed);
         }

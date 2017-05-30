@@ -3,9 +3,15 @@ using UnityEngine;
 
 public class BaseControl : MOBAUnit {
 
+    //event handler so the GameController will receive a callback when any base has been destroyed (end of game)
     public delegate void BaseDestroyedEventHandler(BaseControl BaseKaputt);
     public event BaseDestroyedEventHandler BaseDestroyed;
 
+    //physics & particle effects for the destroyed base:
+    [SerializeField]
+    DestroyExplosion BaseDestroyedPrefab;
+
+    //references:
     public Transform SpawnPoint;
     [SerializeField]
     private Lane[] lanes;
@@ -52,10 +58,17 @@ public class BaseControl : MOBAUnit {
     override protected void UpdateHearthStone()   { Debug.LogError("Base " + gameObject.name + " shouldn't be casting hearthstone"); }
     override protected void UpdateAbility1()      { Debug.LogError("Base " + gameObject.name + " shouldn't be casting ability 1"); }
     override protected void UpdateAbility2()      { Debug.LogError("Base " + gameObject.name + " shouldn't be casting ability 2"); }
+
     override protected void UpdateDeath()
     {
         //@TODO: play crumbling animation?
         if (BaseDestroyed != null) BaseDestroyed(this);
+
+        Destroy(this.gameObject);
+
+        DestroyExplosion exp = Instantiate<DestroyExplosion>(this.BaseDestroyedPrefab, transform.position, transform.rotation);
+        exp.Boom();
+
     }
 
 }

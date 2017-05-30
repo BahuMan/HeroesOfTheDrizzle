@@ -1,0 +1,144 @@
+fileFormatVersion: 2
+guid: 8450807c0a711bf4eb7575e96bf285fa
+timeCreated: 1496043420
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: column front links
+    100002: column front rechts
+    100004: dak balk achter
+    100006: dak balk midden
+    100008: dak balk voor
+    100010: dak links achter
+    100012: dak links voor
+    100014: dak nok
+    100016: dak rechts achter
+    100018: dak rechts voor
+    100020: dak steen achter
+    100022: dak steen voor
+    100024: //RootNode
+    100026: Tomb05_c
+    400000: column front links
+    400002: column front rechts
+    400004: dak balk achter
+    400006: dak balk midden
+    400008: dak balk voor
+    400010: dak links achter
+    400012: dak links voor
+    400014: dak nok
+    400016: dak rechts achter
+    400018: dak rechts voor
+    400020: dak steen achter
+    400022: dak steen voor
+    400024: //RootNode
+    400026: Tomb05_c
+    2300000: column front links
+    2300002: column front rechts
+    2300004: dak balk achter
+    2300006: dak balk midden
+    2300008: dak balk voor
+    2300010: dak links achter
+    2300012: dak links voor
+    2300014: dak nok
+    2300016: dak rechts achter
+    2300018: dak rechts voor
+    2300020: dak steen achter
+    2300022: dak steen voor
+    2300024: Tomb05_c
+    3300000: column front links
+    3300002: column front rechts
+    3300004: dak balk achter
+    3300006: dak balk midden
+    3300008: dak balk voor
+    3300010: dak links achter
+    3300012: dak links voor
+    3300014: dak nok
+    3300016: dak rechts achter
+    3300018: dak rechts voor
+    3300020: dak steen achter
+    3300022: dak steen voor
+    3300024: Tomb05_c
+    4300000: Tomb05_c
+    4300002: dak balk voor
+    4300004: dak balk midden
+    4300006: dak balk achter
+    4300008: dak nok
+    4300010: dak steen voor
+    4300012: dak steen achter
+    4300014: column front links
+    4300016: column front rechts
+    4300018: dak links achter
+    4300020: dak links voor
+    4300022: dak rechts voor
+    4300024: dak rechts achter
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

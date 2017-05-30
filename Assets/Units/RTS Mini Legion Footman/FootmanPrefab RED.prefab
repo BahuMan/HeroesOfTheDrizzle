@@ -263,7 +263,6 @@ GameObject:
   - component: {fileID: 4671041578785188}
   - component: {fileID: 33826602730633002}
   - component: {fileID: 23778557699322580}
-  - component: {fileID: 64745656429499714}
   m_Layer: 0
   m_Name: shadow
   m_TagString: Untagged
@@ -858,20 +857,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64745656429499714
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1588145573656004}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!95 &95630735822539178
 Animator:
   serializedVersion: 3

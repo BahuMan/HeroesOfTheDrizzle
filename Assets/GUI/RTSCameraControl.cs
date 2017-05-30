@@ -28,12 +28,6 @@ public class RTSCameraControl : MonoBehaviour {
     private Vector3 InitPos;
     private Vector3 InitRotation;
  
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
 	void LateUpdate () {
         //PAN
         if (Input.GetMouseButton(1))
