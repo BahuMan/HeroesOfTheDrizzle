@@ -11,3 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestScene.unity
     guid: dd91213d607b018409304b344c35ca06
+  - enabled: 1
+    path: Assets/Scenes/GraveYard.unity
+    guid: 9f8c4255a5e657a458d13255e2a52b48
+  - enabled: 1
+    path: Assets/Scenes/WhiteLevel.unity
+    guid: 00000000000000000000000000000000

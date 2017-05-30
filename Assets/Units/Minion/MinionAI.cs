@@ -70,7 +70,7 @@ public class MinionAI : MOBAUnit {
             //_targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
         }
 
-        _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
+        _targetEnemyDistance = (_targetEnemy.transform.position - transform.position).sqrMagnitude;
         GetAnimatorComponent().SetFloat("ClosestEnemy", _targetEnemyDistance);
         if (_targetEnemyDistance > CloseEnoughToAttack)
         {
@@ -96,10 +96,10 @@ public class MinionAI : MOBAUnit {
         if (_targetEnemy == null)
         {
             _targetEnemy = _enemyTracker.ChooseClosestEnemy();
-            _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
+            //_targetEnemyDistance = (_targetEnemy.transform.position - transform.position).sqrMagnitude;
         }
 
-        _targetEnemyDistance = Vector3.Distance(transform.position, _targetEnemy.transform.position);
+        _targetEnemyDistance = (_targetEnemy.transform.position - transform.position).sqrMagnitude;
         GetAnimatorComponent().SetFloat("ClosestEnemy", _targetEnemyDistance);
         if (_targetEnemyDistance > CloseEnoughToAttack)
         {
@@ -163,7 +163,7 @@ public class MinionAI : MOBAUnit {
     {
         if (curWaypoint < 0 || curWaypoint >= _waypoints.Length) return;
 
-        float distanceToWaypoint = Vector3.Distance(transform.position, _waypoints[curWaypoint].position);
+        float distanceToWaypoint = (_waypoints[curWaypoint].position - transform.position).sqrMagnitude;
         if (distanceToWaypoint < CloseEnoughToWaypoint)
         {
             ++curWaypoint;
