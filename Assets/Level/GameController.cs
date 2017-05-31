@@ -74,6 +74,7 @@ public class GameController : MonoBehaviour {
                 info.IsLocal = true;
                 info.CurrentHero.HeroDied += HeroDied; //call local method when this hero dies
                 theGUI.SetLocalHero(info.CurrentHero);
+                Camera.main.GetComponent<RTSCameraControl>().SetLocalHero(info.CurrentHero);
                 playerList.Add(info.CurrentHero, info);
             }
         }
@@ -87,6 +88,7 @@ public class GameController : MonoBehaviour {
             info.CurrentHero.SetHomeBase(_baseBLUE);
             info.CurrentHero.HeroDied += HeroDied; //call local method when this hero dies
             theGUI.SetLocalHero(info.CurrentHero);
+            Camera.main.GetComponent<RTSCameraControl>().SetLocalHero(info.CurrentHero);
             playerList.Add(info.CurrentHero, info);
 
             PlayerInfo enemy = new PlayerInfo();
