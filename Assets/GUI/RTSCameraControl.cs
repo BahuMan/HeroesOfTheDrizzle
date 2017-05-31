@@ -33,8 +33,6 @@ public class RTSCameraControl : MonoBehaviour {
     private const int _TerrainMask = 1 << 8;
     private HeroControl _localHero = null;
 
-    public UnityEngine.UI.Text DebugText;
-
     private void Start()
     {
         _cam = GetComponent<Camera>();
@@ -96,8 +94,6 @@ public class RTSCameraControl : MonoBehaviour {
         if (Physics.Raycast(r, out hitInfo, 1000f, _TerrainMask))
         {
 
-            DebugText.text = hitInfo.collider.name;
-
             //we want to move what we're looking AT, to the position of the hero
             //so first, calculate the offset of the camera vs what we're look at:
             Vector3 cameraOffset = this.transform.position - hitInfo.point;
@@ -110,10 +106,6 @@ public class RTSCameraControl : MonoBehaviour {
             //and apply the offset to find our camera position:
             this.transform.position = cameraOffset + targetLookAt;
 
-        }
-        else
-        {
-            DebugText.text = "-- nothing --";
         }
 
     }

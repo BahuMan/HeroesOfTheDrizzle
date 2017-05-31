@@ -138,9 +138,15 @@ public class GameController : MonoBehaviour {
         PlayerInfo info = playerList[deadHero];
         if (info != null)
         {
-            playerList.Remove(deadHero);
+            //playerList.Remove(deadHero);
             info.CurrentHero = Instantiate<HeroControl>(info.Prefab, info.PlayerHome.SpawnPoint.position, info.PlayerHome.SpawnPoint.rotation);
-            if (info.IsLocal) theGUI.SetLocalHero(info.CurrentHero);
+            info.CurrentHero.SetHomeBase(info.PlayerHome);
+
+            if (info.IsLocal)
+            {
+                theGUI.SetLocalHero(info.CurrentHero);
+                Camera.main.GetComponent<RTSCameraControl>().SetLocalHero(info.CurrentHero);
+            }
             Debug.Log("Player died, respawning " + info.CurrentHero.name);
         }
         else

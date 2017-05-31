@@ -55,6 +55,11 @@ void Update () {
         HealthFillImg.color = HealthFillColor;
         _ManaSlider.value = _localHero.GetCurrentMana();
 
+        if (Input.GetButtonDown("Cancel"))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("StartMenu");
+        }
+
         if (Input.GetButtonDown("HearthStone"))
         {
             _localHero.ActivateHearthStone();

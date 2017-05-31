@@ -72,4 +72,9 @@ public class StartMenuControl : MonoBehaviour {
 
         SceneManager.LoadScene(sceneNames[MapDropDown.value]);
     }
+
+    public void QuitButtonClicked()
+    {
+        Application.Quit();
+    }
 }

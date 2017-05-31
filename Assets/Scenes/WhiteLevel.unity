@@ -2786,7 +2786,6 @@ GameObject:
   - component: {fileID: 653245273}
   - component: {fileID: 653245272}
   - component: {fileID: 653245271}
-  - component: {fileID: 653245270}
   - component: {fileID: 653245275}
   - component: {fileID: 653245276}
   m_Layer: 0
@@ -2796,13 +2795,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &653245270
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 653245269}
-  m_Enabled: 1
 --- !u!124 &653245271
 Behaviour:
   m_ObjectHideFlags: 0
@@ -2862,7 +2854,8 @@ Transform:
   m_LocalRotation: {x: 0.40696278, y: -0.06830558, z: 0.030534469, w: 0.9103754}
   m_LocalPosition: {x: 24.9, y: 13.7, z: -38.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 790704922}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 48.172, y: -8.582001, z: 0}
@@ -2882,6 +2875,8 @@ MonoBehaviour:
   PanSpeed: 10
   RotationSpeed: 1
   ScrollAtEdges: 0
+  _ButtonTimeOut: 5
+  _smoothTime: 2
 --- !u!45 &653245276
 Skybox:
   m_ObjectHideFlags: 0
@@ -3342,6 +3337,42 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 783449385}
+--- !u!1 &790704921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 790704922}
+  - component: {fileID: 790704923}
+  m_Layer: 0
+  m_Name: Listener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &790704922
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 790704921}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.66, y: -0.7, z: 17.26}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 653245274}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &790704923
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 790704921}
+  m_Enabled: 1
 --- !u!1001 &799413813
 Prefab:
   m_ObjectHideFlags: 0

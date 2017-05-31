@@ -22,10 +22,12 @@ public class BasicAbility: MonoBehaviour
     public enum SkillStatus { READY, CASTING, EFFECT, COOLDOWN}
     private SkillStatus status = SkillStatus.READY;
     protected float lastStatusChange;
+    private AudioSource _audioSource;
 
     virtual protected void Start()
     {
         _hero = GetComponentInParent<HeroControl>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -149,6 +151,7 @@ public class BasicAbility: MonoBehaviour
     virtual public void AbilityStartEffect()
     {
         Debug.Log(_hero.name + " start effect " + AbilityName);
+        if (_audioSource) _audioSource.Play();
         SetStatus(SkillStatus.EFFECT);
     }
 

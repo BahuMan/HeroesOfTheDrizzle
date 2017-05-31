@@ -4,9 +4,6 @@ using UnityEngine;
 public class MinionAI : MOBAUnit {
 
     //FIELDS
-    //References
-    private CharacterController _charCtrl;
-    private EnemyTracker _enemyTracker;
 
     //editor fields
     [SerializeField]
@@ -16,9 +13,20 @@ public class MinionAI : MOBAUnit {
     [SerializeField]
     private float damagePerAttack;
 
-    //private fields
     [SerializeField]
     private Transform[] _waypoints;
+
+    [SerializeField]
+    AudioClip[] _AttackSounds;
+
+    //PRIVATE
+    
+    //References to components
+    private CharacterController _charCtrl;
+    private EnemyTracker _enemyTracker;
+    private AudioSource _audioSource;
+
+    //keep track of what waypoint we're trying to reach:
     private int curWaypoint = -1;
 
     //keep track of the enemy we're currently attacking:
@@ -29,13 +37,15 @@ public class MinionAI : MOBAUnit {
     private const float CloseEnoughToWaypoint = 0.2f;
     private const float CloseEnoughToAttack = 4f;
 
-    //fall accelleration:
+    //fall speed, used to simulate gravity when character controller isn't grounded
     private Vector3 curFallSpeed = Vector3.zero;
 
     override protected void Start () {
         base.Start();
         _charCtrl = GetComponent<CharacterController>();
         _enemyTracker = GetComponentInChildren<EnemyTracker>();
+        _audioSource = GetComponent<AudioSource>();
+
         //Debug.Log("MinionAI.Start");
         if (_waypoints != null && _waypoints.Length > 0) curWaypoint = 0;
 	}
@@ -107,6 +117,11 @@ public class MinionAI : MOBAUnit {
             Rotate2DTo(_targetEnemy.transform);
             //transform.position += transform.forward * Time.deltaTime * runSpeed;
             _charCtrl.Move(transform.forward * Time.deltaTime * runSpeed);
+            if ((_charCtrl.collisionFlags & CollisionFlags.Sides) != 0)
+            {
+                //character was blocked, perhaps by a fellow attacker, so we move sideways:
+                _charCtrl.Move(transform.right * Time.deltaTime * runSpeed);
+            }
         }
         else
         {
@@ -146,6 +161,7 @@ public class MinionAI : MOBAUnit {
         //Debug.Log("Melee Attack");
         if (_targetEnemy != null)
         {
+            _audioSource.PlayOneShot(_AttackSounds[Random.Range(0, _AttackSounds.Length)]);
             _targetEnemy.ReceiveDamage(GetDamageType(), this.damagePerAttack);
         }
     }

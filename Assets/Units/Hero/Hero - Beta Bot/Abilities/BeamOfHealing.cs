@@ -36,6 +36,12 @@ public class BeamOfHealing: TargettedAbility
     {
         base.UpdateEffect();
 
+        //if target died while healing, move to cooldown:
+        if (_targetUnit == null)
+        {
+            SetStatus(SkillStatus.COOLDOWN);
+        }
+
         //Set the position of the healing beam correctly:
         _beam.SetPosition(0, this.transform.position + _beamOffset);
         _beam.SetPosition(1, _targetUnit.transform.position + _beamOffset);
@@ -54,9 +60,9 @@ public class BeamOfHealing: TargettedAbility
         if (!_targetUnit) DeActivate();
 
         //else, add some health, but no more than max health:
-        float healthDifference = -Mathf.Max(_targetUnit.GetMaxHealth() - _targetUnit.GetCurrentHealth(), _healAmount);
+        float healthDifference = Mathf.Max(_targetUnit.GetMaxHealth() - _targetUnit.GetCurrentHealth(), _healAmount);
         _hero.AwardPoints((int)healthDifference);
-        _targetUnit.ReceiveDamage(MOBAUnit.DamageType.MAGIC, healthDifference);
+        _targetUnit.ReceiveDamage(MOBAUnit.DamageType.MAGIC, -healthDifference);
     }
 
     public override void DeActivate()
