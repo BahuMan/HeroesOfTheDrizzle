@@ -33,6 +33,8 @@ public class RTSCameraControl : MonoBehaviour {
     private const int _TerrainMask = 1 << 8;
     private HeroControl _localHero = null;
 
+    public UnityEngine.UI.Text DebugText;
+
     private void Start()
     {
         _cam = GetComponent<Camera>();
@@ -87,10 +89,15 @@ public class RTSCameraControl : MonoBehaviour {
         if (_localHero == null) return;
         if (lastButtonTime + this._ButtonTimeOut > Time.time) return; //if button was pressed too recently, don't scroll
 
-        Ray r =_cam.ViewportPointToRay(new Vector3(.5f, .5f, .5f));
+        Vector3 orig = _cam.ViewportToWorldPoint(new Vector3(.5f, .5f, 0f));
+        Ray r = new Ray(orig, transform.forward);
+        //Ray r = _cam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
         RaycastHit hitInfo;
-        if (Physics.Raycast(r, out hitInfo, _TerrainMask))
+        if (Physics.Raycast(r, out hitInfo, 1000f, _TerrainMask))
         {
+
+            DebugText.text = hitInfo.collider.name;
+
             //we want to move what we're looking AT, to the position of the hero
             //so first, calculate the offset of the camera vs what we're look at:
             Vector3 cameraOffset = this.transform.position - hitInfo.point;
@@ -103,6 +110,10 @@ public class RTSCameraControl : MonoBehaviour {
             //and apply the offset to find our camera position:
             this.transform.position = cameraOffset + targetLookAt;
 
+        }
+        else
+        {
+            DebugText.text = "-- nothing --";
         }
 
     }

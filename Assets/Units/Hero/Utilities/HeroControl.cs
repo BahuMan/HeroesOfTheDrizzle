@@ -273,7 +273,14 @@ public class HeroControl : MOBAUnit {
     {
         Debug.Log("Hero upgrade chosen: " + _upgrades[0].options[chosen].Option);
         UpgradeToAbility(_upgrades[0].options[chosen].AbilityPrefab);
-        //@TODO: remove the first item in the upgrades array, because that choice has now been made already
+        
+        //remove the first item in the upgrades array, because that choice has now been made already
+        HeroUpgrade[] remainingUpgrades = new HeroUpgrade[_upgrades.Length - 1];
+        for (int u=0; u<remainingUpgrades.Length; ++u)
+        {
+            remainingUpgrades[u] = _upgrades[u + 1];
+        }
+        _upgrades = remainingUpgrades;
     }
 
     private void UpgradeToAbility(BasicAbility AbilityPrefab)
