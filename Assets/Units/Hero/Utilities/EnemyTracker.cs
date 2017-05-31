@@ -8,6 +8,11 @@ public class EnemyTracker : MonoBehaviour {
     private MOBAUnit.Alliance _alliance;
     private HashSet<MOBAUnit> _enemiesInSight = new HashSet<MOBAUnit>();
 
+    public bool IsInSight(MOBAUnit u)
+    {
+        return this._enemiesInSight.Contains(u);
+    }
+
     public int GetNrEnemiesInSight()
     {
         _enemiesInSight.RemoveWhere(isNullOrDead);

@@ -47,7 +47,10 @@ public class TurretControl : MOBAUnit {
 
     override protected void UpdateAttacking()
     {
-        if (_enemyTracker.GetNrEnemiesInSight() == 0 || _targetEnemy == null)
+
+        //if we're out of enemies, return to idle
+        
+        if (_enemyTracker.GetNrEnemiesInSight() == 0)
         {
             //@TODO: perhaps animate the "return" of the search beam?
             _beam.SetActive(false);
@@ -55,10 +58,16 @@ public class TurretControl : MOBAUnit {
             return;
         }
 
+        //if current enemy is dead or gone, pick a new one:
+        if (_targetEnemy == null || _targetEnemy.GetStatus() == UnitStatus.DEATH || !_enemyTracker.IsInSight(_targetEnemy))
+        {
+            _targetEnemy = _enemyTracker.ChooseClosestEnemy();
+        }
+
         //make the beam follow the target
         _beam.transform.position = Vector3.SmoothDamp(_beam.transform.position, _targetEnemy.transform.position, ref _beamSmoothingVelocity, _beamSmoothingTime);
 
-
+        //deal damage in intervals:
         if (lastAttackTime + timeBetweenAttacks < Time.time)
         {
             //Debug.Log(gameObject.name + " firing at " + _targetEnemy.name);

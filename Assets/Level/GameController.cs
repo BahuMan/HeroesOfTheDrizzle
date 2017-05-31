@@ -68,6 +68,7 @@ public class GameController : MonoBehaviour {
             {
                 PlayerInfo info = new PlayerInfo();
                 info.PlayerHome = hero.GetAlliance() == MOBAUnit.Alliance.BLUE? _baseBLUE : _baseRED;
+                hero.SetHomeBase(info.PlayerHome);
                 info.Prefab = null;
                 info.CurrentHero = hero;
                 info.IsLocal = true;

@@ -7,6 +7,15 @@ public class BaseControl : MOBAUnit {
     public delegate void BaseDestroyedEventHandler(BaseControl BaseKaputt);
     public event BaseDestroyedEventHandler BaseDestroyed;
 
+    //every base will heal nearby allied units:
+    [SerializeField]
+    private AllyTracker _allyTracker;
+    [SerializeField]
+    private float _healAmount = 5f;
+    [SerializeField]
+    private float _healTime = 1f;
+    private float _lastHealTime = 0f;
+
     //physics & particle effects for the destroyed base:
     [SerializeField]
     DestroyExplosion BaseDestroyedPrefab;
@@ -50,7 +59,7 @@ public class BaseControl : MOBAUnit {
         }
     }
 
-    override protected void UpdateIdle() { /* base is always idle */ }
+    override protected void UpdateIdle() { HealNearbyAllies(); }
     override protected void UpdateWalking()       { Debug.LogError("Base " + gameObject.name + " shouldn't be walking"); }
     override protected void UpdateRunning()       { Debug.LogError("Base " + gameObject.name + " shouldn't be running"); }
     override protected void UpdateAttacking()     { Debug.LogError("Base " + gameObject.name + " shouldn't be attacking"); }
@@ -58,6 +67,22 @@ public class BaseControl : MOBAUnit {
     override protected void UpdateHearthStone()   { Debug.LogError("Base " + gameObject.name + " shouldn't be casting hearthstone"); }
     override protected void UpdateAbility1()      { Debug.LogError("Base " + gameObject.name + " shouldn't be casting ability 1"); }
     override protected void UpdateAbility2()      { Debug.LogError("Base " + gameObject.name + " shouldn't be casting ability 2"); }
+
+    private void HealNearbyAllies()
+    {
+        if (_lastHealTime + _healTime > Time.time) return;
+        _lastHealTime = Time.time;
+
+
+        foreach (MOBAUnit friend in _allyTracker.GetAlliesInSight())
+        {
+            if (friend.GetCurrentHealth() < friend.GetMaxHealth())
+            {
+                Debug.Log("Base healing " + friend.name);
+                friend.ReceiveDamage(DamageType.MAGIC, -_healAmount);
+            }
+        }
+    }
 
     override protected void UpdateDeath()
     {

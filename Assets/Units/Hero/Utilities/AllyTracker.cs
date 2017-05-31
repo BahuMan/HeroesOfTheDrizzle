@@ -47,7 +47,7 @@ public class AllyTracker : MonoBehaviour {
 
     public void OnTriggerExit(Collider other)
     {
-        Debug.Log(gameObject.name + " lost track of " + other.gameObject.name);
+        //Debug.Log(gameObject.name + " lost track of " + other.gameObject.name);
         MOBAUnit unit = other.gameObject.GetComponent<MOBAUnit>();
         if (unit != null)
         {

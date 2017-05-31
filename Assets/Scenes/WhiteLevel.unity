@@ -2780,6 +2780,7 @@ GameObject:
   - component: {fileID: 653245271}
   - component: {fileID: 653245270}
   - component: {fileID: 653245275}
+  - component: {fileID: 653245276}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2851,7 +2852,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 653245269}
   m_LocalRotation: {x: 0.40696278, y: -0.06830558, z: 0.030534469, w: 0.9103754}
-  m_LocalPosition: {x: 5.62, y: 13.7, z: -15.6}
+  m_LocalPosition: {x: 24.9, y: 13.7, z: -38.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2873,6 +2874,14 @@ MonoBehaviour:
   PanSpeed: 10
   RotationSpeed: 1
   ScrollAtEdges: 0
+--- !u!45 &653245276
+Skybox:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 653245269}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 61a5570491f4c934282f8b3c6823efa9, type: 2}
 --- !u!1001 &672572661
 Prefab:
   m_ObjectHideFlags: 0
@@ -3872,7 +3881,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_ReflectionProbeUsage: 2
   m_Materials:
   - {fileID: 2100000, guid: 688b6d3880be67b499ba515132034337, type: 2}
   m_StaticBatchInfo:
@@ -3881,7 +3890,7 @@ MeshRenderer:
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
+  m_ScaleInLightmap: 0.3
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6686,7 +6695,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1094475316494960, guid: d092c99b8ef02f241a79223cfcdaf418, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d092c99b8ef02f241a79223cfcdaf418, type: 2}
