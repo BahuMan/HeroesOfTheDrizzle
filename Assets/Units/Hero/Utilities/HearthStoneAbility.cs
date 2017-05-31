@@ -24,10 +24,11 @@ public class HearthStoneAbility : UntargettedAbility
      */
     override public void AbilityStartEffect()
     {
-        //don't call base.AbilityStartEffect(), because we skip status "EFFECT" and go right to COOLDOWN
+        base.AbilityStartEffect();
         Debug.Log("Going Home");
         _hero.transform.position = _hearthStoneLocation.transform.position;
         _hero.transform.rotation = _hearthStoneLocation.transform.rotation;
+        //skip straight to status "cooldown", because teleport is instantaneous
         this.SetStatus(SkillStatus.COOLDOWN);
     }
 

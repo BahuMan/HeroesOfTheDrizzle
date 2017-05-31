@@ -2793,7 +2793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AbilityName: HearthStone
-  CastDuration: 1
+  CastDuration: 2
   EffectDuration: 1
   CoolDownTime: 5
   _effect: {fileID: 0}

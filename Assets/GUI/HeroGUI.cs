@@ -40,7 +40,7 @@ public class HeroGUI : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _levelDropdown.gameObject.SetActive(false);
+        _levelDropdown.interactable = false;
         HearthStoneButtonImg = HearthStoneButton.GetComponent<Image>();
         Ability1ButtonImg = Ability1Button.GetComponent<Image>();
         Ability2ButtonImg = Ability2Button.GetComponent<Image>();
@@ -194,19 +194,21 @@ void Update () {
     public void CheckUpgradeChoices()
     {
         //if a previous choice is still active, don't check for new choices:
-        if (_levelDropdown.IsActive()) return;
+        if (_levelDropdown.IsInteractable()) return;
 
         HeroUpgradeChoice[] choices = _localHero.GetUpgradeChoices();
         if (choices != null && choices.Length > 0)
         {
-            //if a choice was offered by the hero, let's display it in the GUI:
-            _levelDropdown.gameObject.SetActive(true);
             _levelDropdown.ClearOptions();
             //convert the list of options to something the GUI dropdown can read:
             List<string> opts = new List<string>(choices.Length+1);
             opts.Add("Choose Hero Upgrade");
             for (int c = 0; c < choices.Length; c++) opts.Add(choices[c].Option);
             _levelDropdown.AddOptions(opts);
+            _levelDropdown.value = 0;
+            _levelDropdown.RefreshShownValue();
+            //if a choice was offered by the hero, let's display it in the GUI:
+            _levelDropdown.interactable = true;
         }
     }
 
@@ -218,7 +220,7 @@ void Update () {
         {
             //first line in the dropdown is "choose upgrade", so I need to subtract that line from the choice:
             _localHero.ChooseHeroUpgrade(c-1);
-            _levelDropdown.gameObject.SetActive(false);
+            _levelDropdown.interactable = false;
         }
     }
 

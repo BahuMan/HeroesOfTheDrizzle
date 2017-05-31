@@ -59,7 +59,8 @@ public class RingOfFire : UntargettedAbility {
         {
             if (unit.GetAlliance() != ourSide)
             {
-                Debug.Log(_hero.name + " dealing fire damage to " + unit.name);
+                //Debug.Log(_hero.name + " dealing fire damage to " + unit.name);
+                _hero.AwardPoints((int) _damage);
                 unit.ReceiveDamage(MOBAUnit.DamageType.FIRE, _damage);
             }
         }
