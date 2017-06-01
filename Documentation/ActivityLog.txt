@@ -55,12 +55,6 @@ Mon 22/5 (1 hrs): ability buttons indicate cooldown
 Fri 26/5 (7 hrs): add start menu, hero respawn, + targetted heal ability
   TODO: download extra animation for beta bot ability1
 Sat 27/5 (3+3 hrs): finished upgrade path for 2 heroes + top level indicator
+Tue 30/5 (5 hrs): reorg project structure, destructible bases
+Wed 31/5 (12 hrs): misc bugfixes, add sounds, create video
 
-
-
-
-
-
-    public enum UnitStatus { IDLE, WALKING, RUNNING, ATTACKRUNNING, ATTACKING, HEARTHSTONE, ABILITY1, ABILITY2, DEATH }
-    public enum DamageType { MELEE, FIRE, PIERCE, MAGIC, CRUSH }
-    public enum Alliance { NEUTRAL, BLUE, RED }

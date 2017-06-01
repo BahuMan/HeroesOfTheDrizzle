@@ -99,6 +99,9 @@ public class GameController : MonoBehaviour {
             enemy.CurrentHero.SetHomeBase(_baseRED);
             enemy.CurrentHero.HeroDied += HeroDied; //call local method when this hero dies
             playerList.Add(enemy.CurrentHero, enemy);
+
+            //destroy the start menu object, or else we'll have two of them after we return to the start menu:
+            Destroy(startMenu.gameObject);
         }
     }
 
